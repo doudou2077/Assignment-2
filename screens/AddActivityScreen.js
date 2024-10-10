@@ -1,9 +1,16 @@
-import { View, Text, Button, TextInput, StyleSheet, TouchableOpacity, Platform } from 'react-native'
+import { View, Text, Button, TextInput, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import React, { useState } from 'react'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { useNavigation } from '@react-navigation/native';
 
 export default function AddActivityScreen() {
+    const navigation = useNavigation();
+    const handleCancel = () => {
+        navigation.goBack();  // Go back to the previous screen
+    };
+
+
     // state for dropdown
     const [activityType, setActivityType] = useState(null);
     const [open, setOpen] = useState(false);
@@ -14,6 +21,10 @@ export default function AddActivityScreen() {
     // state for date picker
     const [date, setDate] = useState(null);
     const [showDatePicker, setShowDatePicker] = useState(false);
+
+    const closeDropDown = () => {
+        setOpen(false);
+    };
 
 
     const onDateChange = (_, selectedDate) => {
@@ -31,58 +42,75 @@ export default function AddActivityScreen() {
 
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.label}>Activity *</Text>
-            <DropDownPicker
-                open={open}
-                value={activityType}
-                items={
-                    [{ label: 'Walking', value: 'walking' },
-                    { label: 'Running', value: 'running' },
-                    { label: 'Swimming', value: 'swimming' },
-                    { label: 'Weights', value: 'weights' },
-                    { label: 'Yoga', value: 'yoga' },
-                    { label: 'Cycling', value: 'cycling' },
-                    { label: 'Hiking', value: 'hiking' },]
-                }
-                setOpen={setOpen}
-                setValue={setActivityType}
-                placeholder='Select An Activity'
-            />
+        <TouchableWithoutFeedback onPress={closeDropDown}>
+            <View style={styles.container}>
+                <Text style={styles.label}>Activity *</Text>
+                <DropDownPicker
+                    open={open}
+                    value={activityType}
+                    items={
+                        [{ label: 'Walking', value: 'walking' },
+                        { label: 'Running', value: 'running' },
+                        { label: 'Swimming', value: 'swimming' },
+                        { label: 'Weights', value: 'weights' },
+                        { label: 'Yoga', value: 'yoga' },
+                        { label: 'Cycling', value: 'cycling' },
+                        { label: 'Hiking', value: 'hiking' },]
+                    }
+                    setOpen={setOpen}
+                    setValue={setActivityType}
+                    placeholder='Select An Activity'
+                    style={styles.dropdown}
+                    zIndex={3000}
+                    zIndexInverse={1000}
+                />
 
-            <Text style={styles.label}>Duration(mins) *</Text>
-            <TextInput
-                style={styles.durationInput}
-                placeholder=''
-                keyboardType='numeric'
-                value={duration}
-                onChangeText={setDuration}
-            />
-
-            <Text style={styles.label}>Date *</Text>
-            <TouchableOpacity
-                style={styles.datePickerButton}
-                onPress={handleDatePickerPress}
-            >
+                <Text style={styles.label}>Duration(mins) *</Text>
                 <TextInput
-                    style={styles.dateInput}
-                    value={date ? date.toDateString() : ''}
-                    placeholder={""}
-                    editable={false}
+                    style={styles.durationInput}
+                    placeholder=''
+                    keyboardType='numeric'
+                    value={duration}
+                    onChangeText={setDuration}
                 />
-            </TouchableOpacity>
 
-            {showDatePicker && (
-                <DateTimePicker
-                    testID="dateTimePicker"
-                    value={date || new Date()}
-                    mode="date"
-                    display={'inline'}
-                    onChange={onDateChange}
-                />
-            )}
+                <Text style={styles.label}>Date *</Text>
+                <TouchableOpacity
+                    style={styles.datePickerButton}
+                    onPress={handleDatePickerPress}
+                >
+                    <TextInput
+                        style={styles.dateInput}
+                        value={date ? date.toDateString() : ''}
+                        placeholder={""}
+                        editable={false}
+                    />
+                </TouchableOpacity>
 
-        </View>
+                {showDatePicker && (
+                    <DateTimePicker
+                        testID="dateTimePicker"
+                        value={date || new Date()}
+                        mode="date"
+                        display={'inline'}
+                        onChange={onDateChange}
+                    />
+                )}
+
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.cancelButton} onPress={handleCancel}>
+                        <Text style={styles.buttonText}>Cancel</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.saveButton} onPress={() => { /* Handle Save */ }}>
+                        <Text style={styles.buttonText}>Save</Text>
+                    </TouchableOpacity>
+                </View>
+
+            </View>
+
+
+        </TouchableWithoutFeedback>
     )
 }
 
@@ -99,6 +127,14 @@ const styles = StyleSheet.create({
         marginTop: 10,
         marginBottom: 5,
     },
+    container: {
+        flex: 1,
+        padding: 20,
+    },
+    dropdown: {
+        marginBottom: 15,
+        zIndex: 3000,
+    },
     durationInput: {
         borderColor: 'gray',
         borderWidth: 1,
@@ -114,5 +150,27 @@ const styles = StyleSheet.create({
     },
     dateInput: {
         fontSize: 16,
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 20,
+    },
+    cancelButton: {
+        backgroundColor: '#D32F2F',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 5,
+    },
+    saveButton: {
+        backgroundColor: '#4CAF50',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 5,
+    },
+    buttonText: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold',
     },
 });
