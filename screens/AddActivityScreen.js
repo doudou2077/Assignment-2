@@ -4,6 +4,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useNavigation } from '@react-navigation/native';
 import { useActivityContext } from '../context/ActivityContext';
+import DatePicker from '../components/DatePicker';
 
 export default function AddActivityScreen() {
     const navigation = useNavigation();
@@ -12,7 +13,6 @@ export default function AddActivityScreen() {
     const handleCancel = () => {
         navigation.goBack();  // Go back to the previous screen
     };
-
 
     // state for dropdown
     const [activityType, setActivityType] = useState(null);
@@ -23,25 +23,11 @@ export default function AddActivityScreen() {
 
     // state for date picker
     const [date, setDate] = useState(null);
-    const [showDatePicker, setShowDatePicker] = useState(false);
 
     const closeDropDown = () => {
         setOpen(false);
     };
 
-
-    const onDateChange = (_, selectedDate) => {
-        const currentDate = selectedDate || new Date();
-        setShowDatePicker(false); // Close the calendar once a date is selected or dismissed
-        setDate(currentDate);  // Update the state with the selected date
-    };
-
-    const handleDatePickerPress = () => {
-        if (!date) {
-            setDate(new Date());
-        }
-        setShowDatePicker(true);
-    };
 
     const handleSave = () => {
         const durationNumber = Number(duration);
@@ -94,28 +80,7 @@ export default function AddActivityScreen() {
                     onChangeText={setDuration}
                 />
 
-                <Text style={styles.label}>Date *</Text>
-                <TouchableOpacity
-                    style={styles.datePickerButton}
-                    onPress={handleDatePickerPress}
-                >
-                    <TextInput
-                        style={styles.dateInput}
-                        value={date ? date.toDateString() : ''}
-                        placeholder={""}
-                        editable={false}
-                    />
-                </TouchableOpacity>
-
-                {showDatePicker && (
-                    <DateTimePicker
-                        testID="dateTimePicker"
-                        value={date || new Date()}
-                        mode="date"
-                        display={'inline'}
-                        onChange={onDateChange}
-                    />
-                )}
+                <DatePicker date={date} setDate={setDate} label="Date *" />
 
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.cancelButton} onPress={handleCancel}>
