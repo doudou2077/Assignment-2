@@ -1,4 +1,4 @@
-import { View, Text, Button, TextInput, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Alert } from 'react-native'
 import React, { useState } from 'react'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -40,6 +40,14 @@ export default function AddActivityScreen() {
         setShowDatePicker(true);
     };
 
+    const handleSave = () => {
+        const durationNumber = Number(duration);
+        if (!activityType || !duration || isNaN(durationNumber) || durationNumber <= 0 || !date) {
+            Alert.alert('Invalid Input', 'Please check your input values');
+            return;
+        }
+        console.log('Activity saved:', { activityType, duration, date });
+    }
 
     return (
         <TouchableWithoutFeedback onPress={closeDropDown}>
@@ -102,7 +110,7 @@ export default function AddActivityScreen() {
                         <Text style={styles.buttonText}>Cancel</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.saveButton} onPress={() => { /* Handle Save */ }}>
+                    <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
                         <Text style={styles.buttonText}>Save</Text>
                     </TouchableOpacity>
                 </View>
