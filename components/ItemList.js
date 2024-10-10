@@ -12,7 +12,7 @@ const ItemsList = ({ items, type }) => {
                 </>
             ) : (
                 <>
-                    <Text style={styles.title}>{item.name}</Text>
+                    <Text style={styles.title}>{item.description}</Text>
                     <Text>Calories: {item.calories}</Text>
                     <Text>Date: {item.date.toDateString()}</Text>
                 </>
