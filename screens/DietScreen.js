@@ -1,7 +1,11 @@
 import React, { useLayoutEffect } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Button, StyleSheet } from 'react-native';
+import { useDietContext } from '../context/DietContext';
+import ItemsList from '../components/ItemList';
 
 export default function DietScreen({ navigation }) {
+    const { dietEntries } = useDietContext();
+
     useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
@@ -15,8 +19,7 @@ export default function DietScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <Text>DietScreen</Text>
-            {/* add the list of diet entries here later */}
+            <ItemsList items={dietEntries} type="diet" />
         </View>
     );
 }
@@ -24,7 +27,6 @@ export default function DietScreen({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        padding: 10,
     },
 });
