@@ -1,6 +1,7 @@
-import { View, Text, Button, FlatList, StyleSheet } from 'react-native'
-import React, { useLayoutEffect } from 'react'
+import React, { useLayoutEffect } from 'react';
+import { View, Button, StyleSheet } from 'react-native';
 import { useActivityContext } from '../context/ActivityContext';
+import ItemsList from '../components/ItemList';
 
 export default function ActivitiesScreen({ navigation }) {
     const { activities } = useActivityContext();
@@ -16,34 +17,16 @@ export default function ActivitiesScreen({ navigation }) {
         });
     }, [navigation]);
 
-    const renderItem = ({ item }) => (
-        <View style={styles.activityItem}>
-            <Text>Type: {item.type}</Text>
-            <Text>Duration: {item.duration} mins</Text>
-            <Text>Date: {item.date.toDateString()}</Text>
-        </View>
-    );
-
     return (
         <View style={styles.container}>
-            <FlatList
-                data={activities}
-                renderItem={renderItem}
-                keyExtractor={item => item.id.toString()}
-            />
+            <ItemsList items={activities} type="activity" />
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 10,
-    },
-    activityItem: {
-        padding: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
-        marginBottom: 10,
     },
 });
