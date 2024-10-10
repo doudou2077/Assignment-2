@@ -9,6 +9,7 @@ import SettingsScreen from './screens/SettingsScreen';
 import AddActivityScreen from './screens/AddActivityScreen';
 import AddDietScreen from './screens/AddDietScreen';
 import { ActivityProvider } from './context/ActivityContext';
+import { DietProvider } from './context/DietContext';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -24,7 +25,7 @@ function ActivitiesStack() {
       <Stack.Screen
         name="AddActivity"
         component={AddActivityScreen}
-        options={{ title: 'Add Activity' }}
+        options={{ title: 'Add AnActivity' }}
       />
     </Stack.Navigator>
   );
@@ -41,7 +42,7 @@ function DietStack() {
       <Stack.Screen
         name="AddDiet"
         component={AddDietScreen}
-        options={{ title: 'Add Diet Entry' }}
+        options={{ title: 'Add A Diet Entry' }}
       />
     </Stack.Navigator>
   );
@@ -51,14 +52,16 @@ function DietStack() {
 export default function App() {
   return (
     <ActivityProvider>
-      <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
-      <NavigationContainer>
-        <Tab.Navigator screenOptions={{ headerShown: false }}>
-          <Tab.Screen name="Activities" component={ActivitiesStack} options={{ tabBarLabel: 'Activities' }} />
-          <Tab.Screen name="Diet" component={DietStack} options={{ tabBarLabel: 'Diet' }} />
-          <Tab.Screen name="Settings" component={SettingsScreen} options={{ tabBarLabel: 'Settings' }} />
-        </Tab.Navigator>
-      </NavigationContainer>
+      <DietProvider>
+        <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
+        <NavigationContainer>
+          <Tab.Navigator screenOptions={{ headerShown: false }}>
+            <Tab.Screen name="Activities" component={ActivitiesStack} options={{ tabBarLabel: 'Activities' }} />
+            <Tab.Screen name="Diet" component={DietStack} options={{ tabBarLabel: 'Diet' }} />
+            <Tab.Screen name="Settings" component={SettingsScreen} options={{ tabBarLabel: 'Settings' }} />
+          </Tab.Navigator>
+        </NavigationContainer>
+      </DietProvider>
     </ActivityProvider>
   );
 }
