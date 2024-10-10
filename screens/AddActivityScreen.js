@@ -3,9 +3,12 @@ import React, { useState } from 'react'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useNavigation } from '@react-navigation/native';
+import { useActivityContext } from '../context/ActivityContext';
 
 export default function AddActivityScreen() {
     const navigation = useNavigation();
+    const { addActivity } = useActivityContext();
+
     const handleCancel = () => {
         navigation.goBack();  // Go back to the previous screen
     };
@@ -46,7 +49,16 @@ export default function AddActivityScreen() {
             Alert.alert('Invalid Input', 'Please check your input values');
             return;
         }
-        console.log('Activity saved:', { activityType, duration, date });
+        const newActivity = {
+            id: Date.now(),
+            type: activityType,
+            duration: durationNumber,
+            date: date,
+        };
+
+        addActivity(newActivity);
+        console.log('Activity saved:', newActivity);
+        navigation.goBack();
     }
 
     return (
