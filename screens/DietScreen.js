@@ -2,9 +2,11 @@ import React, { useLayoutEffect } from 'react';
 import { View, Button, StyleSheet } from 'react-native';
 import { useDietContext } from '../context/DietContext';
 import ItemsList from '../components/ItemList';
+import { useTheme } from '../context/ThemeContext';
 
 export default function DietScreen({ navigation }) {
     const { dietEntries } = useDietContext();
+    const { theme } = useTheme();
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -18,7 +20,7 @@ export default function DietScreen({ navigation }) {
     }, [navigation]);
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
             <ItemsList items={dietEntries} type="diet" />
         </View>
     );
