@@ -1,10 +1,24 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import React, { createContext, useState, useContext } from 'react';
 
-export default function ThemeContext() {
+const ThemeContext = createContext();
+
+export const ThemeProvider = ({ children }) => {
+    const [isDarkMode, setIsDarkMode] = useState(false);
+
+    const toggleTheme = () => {
+        setIsDarkMode(prevMode => !prevMode);
+    };
+
+    const theme = {
+        backgroundColor: isDarkMode ? '#333' : '#fff',
+        textColor: isDarkMode ? '#fff' : '#333',
+    };
+
     return (
-        <View>
-            <Text>ThemeContext</Text>
-        </View>
-    )
-}
+        <ThemeContext.Provider value={{ isDarkMode, toggleTheme, theme }}>
+            {children}
+        </ThemeContext.Provider>
+    );
+};
+
+export const useTheme = () => useContext(ThemeContext);
