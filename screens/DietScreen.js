@@ -1,29 +1,33 @@
 import React, { useLayoutEffect } from 'react';
-import { View, Button, StyleSheet } from 'react-native';
+import { View, Button, StyleSheet, StatusBar, TouchableOpacity, Text } from 'react-native';
 import { useDietContext } from '../context/DietContext';
 import ItemsList from '../components/ItemList';
 import { useTheme } from '../context/ThemeContext';
+import { sharedStyles, colors } from '../helperFile/sharedStyles';
 import { listScreenStyles } from '../helperFile/listScreenStyles';
 
 export default function DietScreen({ navigation }) {
     const { dietEntries } = useDietContext();
     const { theme } = useTheme();
 
-    useLayoutEffect(() => {
-        navigation.setOptions({
-            headerRight: () => (
-                <Button
-                    onPress={() => navigation.navigate('AddDiet')}
-                    title="Add"
-                />
-            ),
-        });
-    }, [navigation]);
-
     return (
-        <View style={[listScreenStyles.listContainer, { backgroundColor: theme.backgroundColor }]}>
-            <ItemsList items={dietEntries} type="diet" />
-        </View>
+        <View style={[sharedStyles.container, { backgroundColor: theme.backgroundColor }]}>
+            <StatusBar backgroundColor={colors.primary} barStyle="light-content" />
+            <View style={sharedStyles.headerContainer}>
+                <View style={sharedStyles.headerTextContainer}>
+                    <Text style={sharedStyles.headerText}>Diet</Text>
+                </View>
+                <TouchableOpacity
+                    style={sharedStyles.addButton}
+                    onPress={() => navigation.navigate('AddDiet')}
+                >
+                    <Text style={sharedStyles.addButtonText}>Add</Text>
+                </TouchableOpacity>
+            </View>
+            <View style={[listScreenStyles.listContainer]}>
+                <ItemsList items={dietEntries} type="diet" />
+            </View>
+        </View >
     );
 }
 
