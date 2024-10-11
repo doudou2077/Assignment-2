@@ -10,6 +10,7 @@ import AddActivityScreen from './screens/AddActivityScreen';
 import AddDietScreen from './screens/AddDietScreen';
 import { ActivityProvider } from './context/ActivityContext';
 import { DietProvider } from './context/DietContext';
+import { ThemeProvider } from './context/ThemeContext';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -53,14 +54,16 @@ export default function App() {
   return (
     <ActivityProvider>
       <DietProvider>
-        <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
-        <NavigationContainer>
-          <Tab.Navigator screenOptions={{ headerShown: false }}>
-            <Tab.Screen name="Activities" component={ActivitiesStack} options={{ tabBarLabel: 'Activities' }} />
-            <Tab.Screen name="Diet" component={DietStack} options={{ tabBarLabel: 'Diet' }} />
-            <Tab.Screen name="Settings" component={SettingsScreen} options={{ tabBarLabel: 'Settings' }} />
-          </Tab.Navigator>
-        </NavigationContainer>
+        <ThemeProvider>
+          <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
+          <NavigationContainer>
+            <Tab.Navigator screenOptions={{ headerShown: false }}>
+              <Tab.Screen name="Activities" component={ActivitiesStack} options={{ tabBarLabel: 'Activities' }} />
+              <Tab.Screen name="Diet" component={DietStack} options={{ tabBarLabel: 'Diet' }} />
+              <Tab.Screen name="Settings" component={SettingsScreen} options={{ tabBarLabel: 'Settings' }} />
+            </Tab.Navigator>
+          </NavigationContainer>
+        </ThemeProvider>
       </DietProvider>
     </ActivityProvider>
   );
