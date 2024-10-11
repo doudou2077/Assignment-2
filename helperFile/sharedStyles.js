@@ -19,8 +19,8 @@ export const sharedStyles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: colors.primary,
-        height: 100,  // Increase height to allow more space for the header
-        paddingTop: 40,  // Set padding to make space for the status bar (adjust based on device)
+        height: 100,
+        paddingTop: 40,
         position: 'relative',
     },
     headerTextContainer: {
@@ -40,6 +40,27 @@ export const sharedStyles = StyleSheet.create({
     addButtonText: {
         color: colors.white,
         fontSize: 16,
+    },
+    goBackButton: {
+        position: 'absolute',
+        left: 15,
+        paddingTop: 40,
+    },
+    goBackButtonText: {
+        color: colors.white,
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+
+    centeredContainer: {
+        flex: 1,
+        backgroundColor: colors.background,
+        paddingHorizontal: 20,
+        paddingTop: 40,
+    },
+    formElement: {
+        width: '100%',
+        marginBottom: 20,
     },
 
     label: {
