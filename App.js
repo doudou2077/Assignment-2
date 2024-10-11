@@ -38,7 +38,7 @@ function ActivitiesStack() {
 
 function DietStack() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen
         name="DietHome"
         component={DietScreen}
@@ -49,7 +49,7 @@ function DietStack() {
         component={AddDietScreen}
         options={{ title: 'Add A Diet Entry' }}
       />
-    </Stack.Navigator>
+    </ Stack.Navigator>
   );
 }
 
