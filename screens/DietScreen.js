@@ -3,6 +3,7 @@ import { View, Button, StyleSheet } from 'react-native';
 import { useDietContext } from '../context/DietContext';
 import ItemsList from '../components/ItemList';
 import { useTheme } from '../context/ThemeContext';
+import { listScreenStyles } from '../helperFile/listScreenStyles';
 
 export default function DietScreen({ navigation }) {
     const { dietEntries } = useDietContext();
@@ -20,7 +21,7 @@ export default function DietScreen({ navigation }) {
     }, [navigation]);
 
     return (
-        <View style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
+        <View style={[listScreenStyles.listContainer, { backgroundColor: theme.backgroundColor }]}>
             <ItemsList items={dietEntries} type="diet" />
         </View>
     );

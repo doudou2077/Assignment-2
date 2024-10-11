@@ -1,34 +1,34 @@
-import React, { useLayoutEffect } from 'react';
-import { View, Button, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, Text, TouchableOpacity, StatusBar } from 'react-native';
 import { useActivityContext } from '../context/ActivityContext';
 import ItemsList from '../components/ItemList';
 import { useTheme } from '../context/ThemeContext';
+import { sharedStyles, colors } from '../helperFile/sharedStyles';
+import { listScreenStyles } from '../helperFile/listScreenStyles';
 
 export default function ActivitiesScreen({ navigation }) {
     const { activities } = useActivityContext();
     const { theme } = useTheme();
 
-    useLayoutEffect(() => {
-        navigation.setOptions({
-            headerRight: () => (
-                <Button
-                    onPress={() => navigation.navigate('AddActivity')}
-                    title="Add"
-                />
-            ),
-        });
-    }, [navigation]);
-
     return (
-        <View style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
-            <ItemsList items={activities} type="activity" />
+        <View style={[sharedStyles.container, { backgroundColor: theme.backgroundColor }]}>
+            <StatusBar backgroundColor={colors.primary} barStyle="light-content" />
+
+            <View style={sharedStyles.headerContainer}>
+                <View style={sharedStyles.headerTextContainer}>
+                    <Text style={sharedStyles.headerText}>Activities</Text>
+                </View>
+                <TouchableOpacity
+                    style={sharedStyles.addButton}
+                    onPress={() => navigation.navigate('AddActivity')}
+                >
+                    <Text style={sharedStyles.addButtonText}>Add</Text>
+                </TouchableOpacity>
+            </View>
+            <View style={listScreenStyles.listContainer}>
+                <ItemsList items={activities} type="activity" />
+            </View>
         </View>
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 10,
-    },
-});

@@ -1,20 +1,21 @@
 import React from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
+import { listScreenStyles } from '../helperFile/listScreenStyles';
 
 const ItemsList = ({ items, type }) => {
     const renderItem = ({ item }) => (
-        <View style={styles.item}>
+        <View style={listScreenStyles.listItem}>
             {type === 'activity' ? (
                 <>
-                    <Text style={styles.title}>{item.type}</Text>
-                    <Text>Duration: {item.duration} mins</Text>
-                    <Text>Date: {item.date.toDateString()}</Text>
+                    <Text style={listScreenStyles.listItemTitle}>{item.type}</Text>
+                    <Text style={listScreenStyles.listItemSubtitle}>Duration: {item.duration} mins</Text>
+                    <Text style={listScreenStyles.listItemSubtitle}>Date: {item.date.toDateString()}</Text>
                 </>
             ) : (
                 <>
-                    <Text style={styles.title}>{item.description}</Text>
-                    <Text>Calories: {item.calories}</Text>
-                    <Text>Date: {item.date.toDateString()}</Text>
+                    <Text style={listScreenStyles.listItemTitle}>{item.description}</Text>
+                    <Text style={listScreenStyles.listItemSubtitle}>Calories: {item.calories}</Text>
+                    <Text style={listScreenStyles.listItemSubtitle}>Date: {item.date.toDateString()}</Text>
                 </>
             )}
         </View>
@@ -25,26 +26,9 @@ const ItemsList = ({ items, type }) => {
             data={items}
             renderItem={renderItem}
             keyExtractor={item => item.id.toString()}
-            style={styles.list}
+            contentContainerStyle={listScreenStyles.listContainer}
         />
     );
 };
-
-const styles = StyleSheet.create({
-    list: {
-        flex: 1,
-    },
-    item: {
-        backgroundColor: '#f9f9f9',
-        padding: 20,
-        marginVertical: 8,
-        marginHorizontal: 16,
-        borderRadius: 5,
-    },
-    title: {
-        fontSize: 18,
-        fontWeight: 'bold',
-    },
-});
 
 export default ItemsList;
