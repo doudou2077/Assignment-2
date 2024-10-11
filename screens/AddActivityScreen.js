@@ -4,6 +4,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { useNavigation } from '@react-navigation/native';
 import { useActivityContext } from '../context/ActivityContext';
 import DatePicker from '../components/DatePicker';
+import { sharedStyles, colors } from '../helperFile/sharedStyles';
 
 export default function AddActivityScreen() {
     const navigation = useNavigation();
@@ -48,8 +49,8 @@ export default function AddActivityScreen() {
 
     return (
         <TouchableWithoutFeedback onPress={closeDropDown}>
-            <View style={styles.container}>
-                <Text style={styles.label}>Activity *</Text>
+            <View style={sharedStyles.container}>
+                <Text style={sharedStyles.label}>Activity *</Text>
                 <DropDownPicker
                     open={open}
                     value={activityType}
@@ -70,7 +71,7 @@ export default function AddActivityScreen() {
                     zIndexInverse={1000}
                 />
 
-                <Text style={styles.label}>Duration(mins) *</Text>
+                <Text style={sharedStyles.label}>Duration(mins) *</Text>
                 <TextInput
                     style={styles.durationInput}
                     placeholder=''
@@ -81,13 +82,18 @@ export default function AddActivityScreen() {
 
                 <DatePicker date={date} setDate={setDate} label="Date *" />
 
-                <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.cancelButton} onPress={handleCancel}>
-                        <Text style={styles.buttonText}>Cancel</Text>
+                <View style={sharedStyles.buttonContainer}>
+                    <TouchableOpacity
+                        style={[sharedStyles.button, { backgroundColor: colors.secondary }]}
+                        onPress={handleCancel}
+                    >
+                        <Text style={sharedStyles.buttonText}>Cancel</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-                        <Text style={styles.buttonText}>Save</Text>
+                    <TouchableOpacity
+                        style={[sharedStyles.button, { backgroundColor: colors.primary }]}
+                        onPress={handleSave}>
+                        <Text style={sharedStyles.buttonText}>Save</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -101,20 +107,6 @@ export default function AddActivityScreen() {
 
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 20,
-    },
-    label: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        marginTop: 10,
-        marginBottom: 5,
-    },
-    container: {
-        flex: 1,
-        padding: 20,
-    },
     dropdown: {
         marginBottom: 15,
         zIndex: 3000,
@@ -124,37 +116,5 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 5,
         padding: 10,
-    },
-    datePickerButton: {
-        borderColor: 'gray',
-        borderWidth: 1,
-        borderRadius: 5,
-        padding: 10,
-        marginBottom: 20,
-    },
-    dateInput: {
-        fontSize: 16,
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginTop: 20,
-    },
-    cancelButton: {
-        backgroundColor: '#D32F2F',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 5,
-    },
-    saveButton: {
-        backgroundColor: '#4CAF50',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 5,
-    },
-    buttonText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
     },
 });
