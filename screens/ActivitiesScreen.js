@@ -2,9 +2,11 @@ import React, { useLayoutEffect } from 'react';
 import { View, Button, StyleSheet } from 'react-native';
 import { useActivityContext } from '../context/ActivityContext';
 import ItemsList from '../components/ItemList';
+import { useTheme } from '../context/ThemeContext';
 
 export default function ActivitiesScreen({ navigation }) {
     const { activities } = useActivityContext();
+    const { theme } = useTheme();
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -18,7 +20,7 @@ export default function ActivitiesScreen({ navigation }) {
     }, [navigation]);
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
             <ItemsList items={activities} type="activity" />
         </View>
     );
