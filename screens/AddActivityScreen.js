@@ -97,6 +97,7 @@ export default function AddActivityScreen() {
                             keyboardType='numeric'
                             value={duration}
                             onChangeText={setDuration}
+                            backgroundColor='lightgray'
                         />
                     </View>
 
@@ -135,6 +136,7 @@ const styles = StyleSheet.create({
     dropdown: {
         marginBottom: 16,
         zIndex: 3000,
+        backgroundColor: 'lightgray'
     },
 
     durationInput: {
