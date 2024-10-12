@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Alert, SafeAreaView } from 'react-native'
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Alert } from 'react-native'
 import React, { useState } from 'react'
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useNavigation } from '@react-navigation/native';
@@ -63,30 +63,33 @@ export default function AddActivityScreen() {
 
             <TouchableWithoutFeedback onPress={closeDropDown}>
                 <View style={sharedStyles.centeredContainer}>
-                    <View style={sharedStyles.formElement}>
+                    <View style={[sharedStyles.formElement, { zIndex: open ? 3000 : 1 }]}>
                         <Text style={sharedStyles.label}>Activity *</Text>
                         <DropDownPicker
                             open={open}
                             value={activityType}
-                            items={
-                                [{ label: 'Walking', value: 'walking' },
+                            items={[
+                                { label: 'Walking', value: 'walking' },
                                 { label: 'Running', value: 'running' },
                                 { label: 'Swimming', value: 'swimming' },
                                 { label: 'Weights', value: 'weights' },
                                 { label: 'Yoga', value: 'yoga' },
                                 { label: 'Cycling', value: 'cycling' },
-                                { label: 'Hiking', value: 'hiking' },]
-                            }
+                                { label: 'Hiking', value: 'hiking' },
+                            ]}
                             setOpen={setOpen}
                             setValue={setActivityType}
                             placeholder='Select An Activity'
                             style={styles.dropdown}
                             zIndex={3000}
                             zIndexInverse={1000}
+                            dropDownContainerStyle={{
+                                maxHeight: 210,
+                            }}
                         />
                     </View>
 
-                    <View style={sharedStyles.formElement}>
+                    <View style={[sharedStyles.formElement, { zIndex: open ? 1 : 1000 }]}>
                         <Text style={sharedStyles.label}>Duration(mins) *</Text>
                         <TextInput
                             style={styles.durationInput}
@@ -97,9 +100,14 @@ export default function AddActivityScreen() {
                         />
                     </View>
 
-                    <View style={sharedStyles.formElement}>
-                        <DatePicker date={date} setDate={setDate} label="Date *" />
+                    <View style={[sharedStyles.formElement, { zIndex: open ? 1 : 1000 }]}>
+                        <DatePicker
+                            date={date}
+                            setDate={setDate}
+                            label="Date *"
+                        />
                     </View>
+
                     <View style={sharedStyles.buttonContainer}>
                         <TouchableOpacity
                             style={[sharedStyles.button, { backgroundColor: colors.secondary }]}
@@ -125,9 +133,10 @@ export default function AddActivityScreen() {
 
 const styles = StyleSheet.create({
     dropdown: {
-        marginBottom: 15,
+        marginBottom: 16,
         zIndex: 3000,
     },
+
     durationInput: {
         borderColor: 'gray',
         borderWidth: 1,
