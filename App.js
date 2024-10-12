@@ -65,10 +65,15 @@ export default function App() {
             <NavigationContainer>
               <Tab.Navigator
                 screenOptions={({ route }) => ({
+                  tabBarStyle: {
+                    backgroundColor: '#4A55A2',
+                  },
+                  tabBarActiveTintColor: '#FFF59D',
+                  tabBarInactiveTintColor: 'white',
                   headerShown: false,
-                  tabBarIcon: ({ focused, color, size }) => {
+                  tabBarIcon: ({ color, size }) => {
                     let iconName;
-                    let IconComponent = Ionicons;  // Default to Ionicons
+                    let IconComponent = Ionicons;
 
                     if (route.name === 'Activities') {
                       IconComponent = FontAwesome5;
@@ -80,7 +85,7 @@ export default function App() {
                     }
 
                     // Use the focused state to adjust the icon's appearance
-                    return <IconComponent name={iconName} size={size} color={focused ? '#4A55A2' : color} />;
+                    return <IconComponent name={iconName} size={size} color={color} />;
                   },
                 })}
               >
