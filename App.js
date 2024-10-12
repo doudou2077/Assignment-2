@@ -11,6 +11,8 @@ import { ActivityProvider } from './context/ActivityContext';
 import { DietProvider } from './context/DietContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { SafeAreaProvider } from 'react-native-safe-area-context'
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -61,7 +63,27 @@ export default function App() {
         <DietProvider>
           <ThemeProvider>
             <NavigationContainer>
-              <Tab.Navigator screenOptions={{ headerShown: false }}>
+              <Tab.Navigator
+                screenOptions={({ route }) => ({
+                  headerShown: false,
+                  tabBarIcon: ({ focused, color, size }) => {
+                    let iconName;
+                    let IconComponent = Ionicons;  // Default to Ionicons
+
+                    if (route.name === 'Activities') {
+                      IconComponent = FontAwesome5;
+                      iconName = 'running';
+                    } else if (route.name === 'Diet') {
+                      iconName = 'fast-food';
+                    } else if (route.name === 'Settings') {
+                      iconName = 'settings';
+                    }
+
+                    // Use the focused state to adjust the icon's appearance
+                    return <IconComponent name={iconName} size={size} color={focused ? '#4A55A2' : color} />;
+                  },
+                })}
+              >
                 <Tab.Screen name="Activities" component={ActivitiesStack} options={{ tabBarLabel: 'Activities' }} />
                 <Tab.Screen name="Diet" component={DietStack} options={{ tabBarLabel: 'Diet' }} />
                 <Tab.Screen name="Settings" component={SettingsScreen} options={{ tabBarLabel: 'Settings' }} />
