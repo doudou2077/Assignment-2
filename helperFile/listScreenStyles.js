@@ -8,11 +8,15 @@ export const listScreenStyles = StyleSheet.create({
         backgroundColor: colors.background,
     },
     listItem: {
-        backgroundColor: '#fff',
-        padding: 15,
+        backgroundColor: colors.primary,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         marginVertical: 8,
         marginHorizontal: 16,
-        borderRadius: 5,
+        borderRadius: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 15,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -22,13 +26,28 @@ export const listScreenStyles = StyleSheet.create({
         shadowRadius: 2.62,
         elevation: 4,
     },
-    listItemTitle: {
+    itemType: {
         fontSize: 18,
         fontWeight: 'bold',
-        color: colors.text,
+        color: colors.white,
+        flex: 1,
     },
-    listItemSubtitle: {
-        fontSize: 14,
-        color: colors.text,
+    detailsContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginRight: -6,
+    },
+    detailBox: {
+        backgroundColor: colors.white,
+        borderRadius: 5,
+        padding: 5,
+        marginLeft: 5,
+    },
+    detailText: {
+        color: colors.primary,
+        fontSize: 12,
+    },
+    icon: {
+        marginLeft: 5,
     },
 });
