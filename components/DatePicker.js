@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-const DatePicker = ({ date, setDate, label }) => {
-    const [showDatePicker, setShowDatePicker] = useState(false);
+const DatePicker = ({ date, setDate, label, showDatePicker, setShowDatePicker }) => {
 
     const onDateChange = (_, selectedDate) => {
         const currentDate = selectedDate || date;
@@ -28,7 +27,7 @@ const DatePicker = ({ date, setDate, label }) => {
                 <TextInput
                     style={styles.dateInput}
                     value={date ? date.toDateString() : ''}
-                    placeholder="Select a date"
+                    placeholder=""
                     editable={false}
                 />
             </TouchableOpacity>
@@ -59,6 +58,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         padding: 10,
         marginBottom: 20,
+        backgroundColor: 'lightgray'
     },
     dateInput: {
         fontSize: 16,
