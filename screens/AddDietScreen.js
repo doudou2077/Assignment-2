@@ -1,17 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, Alert, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import DatePicker from '../components/DatePicker';
 import { useDietContext } from '../context/DietContext';
 import { sharedStyles, colors } from '../helperFile/sharedStyles';
+import { useTheme } from '../context/ThemeContext';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 export default function AddDietScreen() {
     const navigation = useNavigation();
     const { addDietEntry } = useDietContext();
+    const { theme } = useTheme();
 
     const [description, setDescription] = useState('');
     const [calories, setCalories] = useState('');
     const [date, setDate] = useState(null);
+    const [currentTheme, setCurrentTheme] = useState(theme);
+
+    useFocusEffect(
+        useCallback(() => {
+            setCurrentTheme(theme);
+        }, [theme])
+    );
 
     const handleCancel = () => {
         navigation.goBack();
@@ -37,7 +47,7 @@ export default function AddDietScreen() {
     };
 
     return (
-        <View style={[sharedStyles.container]}>
+        <View style={[sharedStyles.container, { backgroundColor: currentTheme.backgroundColor }]}>
             <View style={sharedStyles.headerContainer}>
                 <View style={sharedStyles.headerTextContainer}>
                     <Text style={sharedStyles.headerText}>Add Diet Entry</Text>
@@ -46,7 +56,7 @@ export default function AddDietScreen() {
                     style={sharedStyles.goBackButton}
                     onPress={handleCancel}
                 >
-                    <Text style={sharedStyles.goBackButtonText}> &lt; </Text>
+                    <AntDesign name="left" size={24} style={sharedStyles.goBackButtonText} />
                 </TouchableOpacity>
             </View>
 
@@ -60,6 +70,9 @@ export default function AddDietScreen() {
                             onChangeText={setDescription}
                             placeholder=""
                             backgroundColor='lightgray'
+                            multiline={true}
+                            textAlignVertical="top"
+                            numberOfLines={4}
                         />
                     </View>
 
