@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, Alert, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import DatePicker from '../components/DatePicker';
 import { useDietContext } from '../context/DietContext';
@@ -37,42 +37,82 @@ export default function AddDietScreen() {
     };
 
     return (
-        <View style={sharedStyles.container}>
-            <Text style={sharedStyles.label}>Description *</Text>
-            <TextInput
-                style={sharedStyles.input}
-                value={description}
-                onChangeText={setDescription}
-                placeholder="Enter description"
-            />
-
-            <Text style={sharedStyles.label}>Calories *</Text>
-            <TextInput
-                style={sharedStyles.input}
-                value={calories}
-                onChangeText={setCalories}
-                placeholder="Enter calories"
-                keyboardType="numeric"
-            />
-
-            <DatePicker date={date} setDate={setDate} label="Date *" />
-
-            <View style={sharedStyles.buttonContainer}>
+        <View style={[sharedStyles.container]}>
+            <View style={sharedStyles.headerContainer}>
+                <View style={sharedStyles.headerTextContainer}>
+                    <Text style={sharedStyles.headerText}>Add Diet Entry</Text>
+                </View>
                 <TouchableOpacity
-                    style={[sharedStyles.button, { backgroundColor: colors.secondary }]}
+                    style={sharedStyles.goBackButton}
                     onPress={handleCancel}
                 >
-                    <Text style={sharedStyles.buttonText}>Cancel</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    style={[sharedStyles.button, { backgroundColor: colors.primary }]}
-                    onPress={handleSave}
-                >
-                    <Text style={sharedStyles.buttonText}>Save</Text>
+                    <Text style={sharedStyles.goBackButtonText}> &lt; </Text>
                 </TouchableOpacity>
             </View>
+
+            <TouchableWithoutFeedback>
+                <View style={sharedStyles.centeredContainer}>
+                    <View style={sharedStyles.formElement}>
+                        <Text style={sharedStyles.label}>Description *</Text>
+                        <TextInput
+                            style={[styles.input, styles.descriptionInput]}
+                            value={description}
+                            onChangeText={setDescription}
+                            placeholder=""
+                            backgroundColor='lightgray'
+                        />
+                    </View>
+
+                    <View style={sharedStyles.formElement}>
+                        <Text style={sharedStyles.label}>Calories *</Text>
+                        <TextInput
+                            style={styles.input}
+                            value={calories}
+                            onChangeText={setCalories}
+                            placeholder=""
+                            keyboardType="numeric"
+                            backgroundColor='lightgray'
+                        />
+                    </View>
+
+                    <View style={sharedStyles.formElement}>
+                        <DatePicker
+                            date={date}
+                            setDate={setDate}
+                            label="Date *"
+                        />
+                    </View>
+
+                    <View style={sharedStyles.buttonContainer}>
+                        <TouchableOpacity
+                            style={[sharedStyles.button, { backgroundColor: colors.secondary }]}
+                            onPress={handleCancel}
+                        >
+                            <Text style={sharedStyles.buttonText}>Cancel</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            style={[sharedStyles.button, { backgroundColor: colors.primary }]}
+                            onPress={handleSave}
+                        >
+                            <Text style={sharedStyles.buttonText}>Save</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </TouchableWithoutFeedback>
         </View>
     );
 }
 
+const styles = StyleSheet.create({
+    input: {
+        borderColor: 'gray',
+        borderWidth: 1,
+        borderRadius: 5,
+        padding: 10,
+    },
+    descriptionInput: {
+        height: 100,
+        textAlignVertical: 'top',  // Align text to the top
+    },
+});
