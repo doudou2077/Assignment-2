@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext } from 'react';
+import { colors } from '../helperFile/sharedStyles';
 
 const ThemeContext = createContext();
 
@@ -10,8 +11,7 @@ export const ThemeProvider = ({ children }) => {
     };
 
     const theme = {
-        backgroundColor: isDarkMode ? '#333' : '#fff',
-        textColor: isDarkMode ? '#fff' : '#333',
+        backgroundColor: isDarkMode ? colors.darkMode : colors.background,
     };
 
     return (
