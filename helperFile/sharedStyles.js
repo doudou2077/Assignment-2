@@ -6,6 +6,7 @@ export const colors = {
     background: '#A0BFE0', // Light blue background color
     text: '#000000', // Black text color
     white: '#FFFFFF',
+    darkMode: '#191970',
 };
 
 
