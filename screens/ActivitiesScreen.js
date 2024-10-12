@@ -12,7 +12,7 @@ export default function ActivitiesScreen({ navigation }) {
 
     return (
         <View style={[sharedStyles.container, { backgroundColor: theme.backgroundColor }]}>
-            <StatusBar backgroundColor={colors.primary} barStyle="light-content" />
+            <StatusBar backgroundColor={colors.primary} barStyle={theme.isDarkMode ? "light-content" : "dark-content"} />
 
             <View style={sharedStyles.headerContainer}>
                 <View style={sharedStyles.headerTextContainer}>
@@ -25,10 +25,9 @@ export default function ActivitiesScreen({ navigation }) {
                     <Text style={sharedStyles.addButtonText}>Add</Text>
                 </TouchableOpacity>
             </View>
-            <View style={listScreenStyles.listContainer}>
-                <ItemsList items={activities} type="activity" />
+            <View style={[listScreenStyles.listContainer, { backgroundColor: theme.backgroundColor }]}>
+                <ItemsList items={activities} type="activity" theme={theme} />
             </View>
         </View>
     );
 }
-
