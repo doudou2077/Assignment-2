@@ -14,7 +14,7 @@ export default function SettingsScreen() {
                 </View>
             </View>
             <View style={styles.content}>
-                <Text style={[styles.text, { color: theme.textColor }]}>Toggle Theme</Text>
+                <Text style={styles.text}>Toggle Theme</Text>
                 <Switch
                     value={isDarkMode}
                     onValueChange={toggleTheme}
@@ -28,10 +28,14 @@ const styles = StyleSheet.create({
     content: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'center', textShadowColor: '#585858',
+        textShadowOffset: { width: 5, height: 5 },
+        textShadowRadius: 10,
     },
     text: {
         fontSize: 18,
         marginBottom: 10,
+        color: '#FFFFD0',
+        fontWeight: 'bold',
     },
 });
