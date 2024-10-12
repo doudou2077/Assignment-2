@@ -50,4 +50,9 @@ export const listScreenStyles = StyleSheet.create({
     icon: {
         marginLeft: 5,
     },
+    typeContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        flex: 1,
+    },
 });
