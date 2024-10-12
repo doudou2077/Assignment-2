@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useActivityContext } from '../context/ActivityContext';
 import DatePicker from '../components/DatePicker';
 import { sharedStyles, colors } from '../helperFile/sharedStyles';
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 export default function AddActivityScreen() {
     const navigation = useNavigation();
@@ -57,7 +58,7 @@ export default function AddActivityScreen() {
                     style={sharedStyles.goBackButton}
                     onPress={() => handleCancel()}
                 >
-                    <Text style={sharedStyles.goBackButtonText}> &lt; </Text>
+                    <AntDesign name="left" size={24} style={sharedStyles.goBackButtonText} />
                 </TouchableOpacity>
             </View>
 
