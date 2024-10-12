@@ -24,10 +24,7 @@ export default function AddActivityScreen() {
 
     // state for date picker
     const [date, setDate] = useState(null);
-
-    const closeDropDown = () => {
-        setOpen(false);
-    };
+    const [showDatePicker, setShowDatePicker] = useState(false);
 
 
     const handleSave = () => {
@@ -62,7 +59,12 @@ export default function AddActivityScreen() {
                 </TouchableOpacity>
             </View>
 
-            <TouchableWithoutFeedback onPress={closeDropDown}>
+            <TouchableWithoutFeedback
+                onPress={() => {
+                    if (open) setOpen(false); // Close dropdown picker
+                    if (showDatePicker) setShowDatePicker(false); // Close date picker
+                }}
+            >
                 <View style={sharedStyles.centeredContainer}>
                     <View style={[sharedStyles.formElement, { zIndex: open ? 3000 : 1 }]}>
                         <Text style={sharedStyles.label}>Activity *</Text>
@@ -106,6 +108,8 @@ export default function AddActivityScreen() {
                         <DatePicker
                             date={date}
                             setDate={setDate}
+                            setShowDatePicker={setShowDatePicker}
+                            showDatePicker={showDatePicker}
                             label="Date *"
                         />
                     </View>
