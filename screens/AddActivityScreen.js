@@ -6,10 +6,12 @@ import { useActivityContext } from '../context/ActivityContext';
 import DatePicker from '../components/DatePicker';
 import { sharedStyles, colors } from '../helperFile/sharedStyles';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import { useTheme } from '../context/ThemeContext';
 
 export default function AddActivityScreen() {
     const navigation = useNavigation();
     const { addActivity } = useActivityContext();
+    const { theme } = useTheme();
 
     const handleCancel = () => {
         navigation.goBack();  // Go back to the previous screen
@@ -46,7 +48,7 @@ export default function AddActivityScreen() {
     }
 
     return (
-        <View style={[sharedStyles.container]}>
+        <View style={[sharedStyles.container, { backgroundColor: theme.backgroundColor }]}>
             <View style={sharedStyles.headerContainer}>
                 <View style={sharedStyles.headerTextContainer}>
                     <Text style={sharedStyles.headerText}>Add Activity</Text>
