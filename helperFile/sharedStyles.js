@@ -5,8 +5,8 @@ export const colors = {
     secondary: '#7895CB', // Lighter blue color
     background: '#A0BFE0', // Light blue background color
     text: '#000000', // Black text color
-    white: '#FFFFFF',
-    darkMode: '#191970',
+    white: '#FFFFFF', // White color for backgrounds and text
+    darkMode: '#191970', // Dark blue color for dark mode background
 };
 
 
@@ -16,13 +16,13 @@ export const sharedStyles = StyleSheet.create({
         backgroundColor: colors.background,
     },
     headerContainer: {
-        flexDirection: 'row',
+        flexDirection: 'row', // Arrange header items in a row
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: colors.primary,
+        backgroundColor: colors.primary, // Set header background color
         height: 100,
         paddingTop: 40,
-        position: 'relative',
+        position: 'relative',// Positioning context for absolute children
     },
     headerTextContainer: {
         flex: 1,
@@ -34,7 +34,7 @@ export const sharedStyles = StyleSheet.create({
         fontWeight: 'bold',
     },
     addButton: {
-        position: 'absolute',
+        position: 'absolute', // Position the add button absolutely within the header
         right: 15,
         paddingTop: 40,
     },
@@ -59,7 +59,7 @@ export const sharedStyles = StyleSheet.create({
         paddingTop: 40,
     },
     formElement: {
-        width: '100%',
+        width: '100%', // Full width for form elements
         marginBottom: 20,
     },
 
@@ -78,7 +78,7 @@ export const sharedStyles = StyleSheet.create({
     },
     buttonContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'space-between', // Space buttons evenly
         marginTop: 20,
     },
     button: {

@@ -13,9 +13,11 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
+// Creating navigators
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
+// Stack navigator for Activities
 function ActivitiesStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -37,6 +39,7 @@ function ActivitiesStack() {
   );
 }
 
+// Stack navigator for Diet
 function DietStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -54,13 +57,13 @@ function DietStack() {
   );
 }
 
-
+// Main App component
 export default function App() {
   return (
-    <SafeAreaProvider>
-      <ThemeProvider>
-        <CombinedProvider>
-          <NavigationContainer>
+    <SafeAreaProvider> {/* Providing safe area context */}
+      <ThemeProvider> {/* Providing theme context */}
+        <CombinedProvider> {/* Providing combined context for diet and activity entries */}
+          <NavigationContainer>  {/* Wrapping the app in a navigation container */}
             <Tab.Navigator
               screenOptions={({ route }) => ({
                 tabBarStyle: {
@@ -73,6 +76,7 @@ export default function App() {
                   let iconName;
                   let IconComponent = Ionicons;
 
+                  // Determine the icon based on the route name
                   if (route.name === 'Activities') {
                     IconComponent = FontAwesome5;
                     iconName = 'running';
@@ -87,6 +91,7 @@ export default function App() {
                 },
               })}
             >
+              {/* Defining the tab screens */}
               <Tab.Screen name="Activities" component={ActivitiesStack} options={{ tabBarLabel: 'Activities' }} />
               <Tab.Screen name="Diet" component={DietStack} options={{ tabBarLabel: 'Diet' }} />
               <Tab.Screen name="Settings" component={SettingsScreen} options={{ tabBarLabel: 'Settings' }} />

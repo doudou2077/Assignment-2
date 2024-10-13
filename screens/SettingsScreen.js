@@ -1,10 +1,11 @@
 import React from 'react';
 import { View, Text, Switch, StyleSheet } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
-import { sharedStyles, colors } from '../helperFile/sharedStyles';
+import { sharedStyles } from '../helperFile/sharedStyles';
 
+// SettingsScreen component for managing application settings
 export default function SettingsScreen() {
-    const { isDarkMode, toggleTheme, theme } = useTheme();
+    const { isDarkMode, toggleTheme, theme } = useTheme(); // Accessing theme context values
 
     return (
         <View style={[sharedStyles.container, { backgroundColor: theme.backgroundColor }]}>
@@ -16,8 +17,8 @@ export default function SettingsScreen() {
             <View style={styles.content}>
                 <Text style={styles.text}>Toggle Theme</Text>
                 <Switch
-                    value={isDarkMode}
-                    onValueChange={toggleTheme}
+                    value={isDarkMode} // Current value of the switch based on dark mode state
+                    onValueChange={toggleTheme} // Function to toggle the theme on switch change
                 />
             </View>
         </View>

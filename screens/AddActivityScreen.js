@@ -28,13 +28,14 @@ export default function AddActivityScreen() {
     const [date, setDate] = useState(null);
     const [showDatePicker, setShowDatePicker] = useState(false);
 
-
+    // Function to handle saving the activity entry
     const handleSave = () => {
         const durationNumber = Number(duration);
         if (!activityType || !duration || isNaN(durationNumber) || durationNumber <= 0 || !date) {
             Alert.alert('Invalid Input', 'Please check your input values');
             return;
         }
+        // Create a new activity object
         const newActivity = {
             id: Date.now(),
             type: activityType,
@@ -68,11 +69,12 @@ export default function AddActivityScreen() {
                 }}
             >
                 <View style={sharedStyles.centeredContainer}>
+                    {/* Dropdown for selecting activity type */}
                     <View style={[sharedStyles.formElement, { zIndex: open ? 3000 : 1 }]}>
                         <Text style={[sharedStyles.label, { color: theme.textColor }]}>Activity *</Text>
                         <DropDownPicker
-                            open={open}
-                            value={activityType}
+                            open={open} // Control dropdown visibility
+                            value={activityType} // Current selected value
                             items={[
                                 { label: 'Walking', value: 'walking' },
                                 { label: 'Running', value: 'running' },
@@ -107,6 +109,7 @@ export default function AddActivityScreen() {
                         />
                     </View>
 
+                    {/* DatePicker component for selecting the date */}
                     <View style={[sharedStyles.formElement, { zIndex: open ? 1 : 1000 }]}>
                         <DatePicker
                             date={date}
@@ -119,6 +122,7 @@ export default function AddActivityScreen() {
                     </View>
 
                     <View style={sharedStyles.buttonContainer}>
+                        {/* Cancel button */}
                         <TouchableOpacity
                             style={[sharedStyles.button, { backgroundColor: colors.secondary }]}
                             onPress={handleCancel}
@@ -126,6 +130,7 @@ export default function AddActivityScreen() {
                             <Text style={sharedStyles.buttonText}>Cancel</Text>
                         </TouchableOpacity>
 
+                        {/* Save button */}
                         <TouchableOpacity
                             style={[sharedStyles.button, { backgroundColor: colors.primary }]}
                             onPress={handleSave}>

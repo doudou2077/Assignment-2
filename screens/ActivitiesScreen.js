@@ -7,8 +7,8 @@ import { sharedStyles, colors } from '../helperFile/sharedStyles';
 import { listScreenStyles } from '../helperFile/listScreenStyles';
 
 export default function ActivitiesScreen({ navigation }) {
-    const { activities } = useCombinedContext();
-    const { theme } = useTheme();
+    const { activities } = useCombinedContext(); // Accessing activity entries from the combined context
+    const { theme } = useTheme();// Accessing the current theme from the theme context
 
     return (
         <View style={[sharedStyles.container, { backgroundColor: theme.backgroundColor }]}>
@@ -20,12 +20,13 @@ export default function ActivitiesScreen({ navigation }) {
                 </View>
                 <TouchableOpacity
                     style={sharedStyles.addButton}
-                    onPress={() => navigation.navigate('AddActivity')}
+                    onPress={() => navigation.navigate('AddActivity')} // Navigate to the AddActivity screen on press
                 >
                     <Text style={sharedStyles.addButtonText}>Add</Text>
                 </TouchableOpacity>
             </View>
             <View style={[listScreenStyles.listContainer, { backgroundColor: theme.backgroundColor }]}>
+                {/* Rendering the ItemsList component with activity entries */}
                 <ItemsList items={activities} type="activity" theme={theme} />
             </View>
         </View>

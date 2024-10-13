@@ -9,19 +9,22 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 
 export default function AddDietScreen() {
     const navigation = useNavigation();
+    // Accessing the function to add a diet entry from context
     const { addDietEntry } = useCombinedContext();
     const { theme } = useTheme();
 
+    // State variables for form inputs
     const [description, setDescription] = useState('');
     const [calories, setCalories] = useState('');
     const [date, setDate] = useState(null);
     const [showDatePicker, setShowDatePicker] = useState(false);
 
-
+    // Function to handle cancel action
     const handleCancel = () => {
         navigation.goBack();
     };
 
+    // Function to handle saving the diet entry
     const handleSave = () => {
         const caloriesNumber = Number(calories);
         if (!description || !calories || !date || isNaN(caloriesNumber) || caloriesNumber <= 0) {
@@ -29,6 +32,7 @@ export default function AddDietScreen() {
             return;
         }
 
+        // Create a new diet entry object
         const newDietEntry = {
             id: Date.now(),
             description,
@@ -84,6 +88,7 @@ export default function AddDietScreen() {
                     </View>
 
                     <View style={sharedStyles.formElement}>
+                        {/* DatePicker component for selecting the date */}
                         <DatePicker
                             theme={theme}
                             date={date}
@@ -95,6 +100,7 @@ export default function AddDietScreen() {
                     </View>
 
                     <View style={sharedStyles.buttonContainer}>
+                        {/* Cancel button */}
                         <TouchableOpacity
                             style={[sharedStyles.button, { backgroundColor: colors.secondary }]}
                             onPress={handleCancel}
@@ -102,6 +108,7 @@ export default function AddDietScreen() {
                             <Text style={sharedStyles.buttonText}>Cancel</Text>
                         </TouchableOpacity>
 
+                        {/* Save button */}
                         <TouchableOpacity
                             style={[sharedStyles.button, { backgroundColor: colors.primary }]}
                             onPress={handleSave}

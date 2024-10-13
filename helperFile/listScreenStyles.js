@@ -8,8 +8,8 @@ export const listScreenStyles = StyleSheet.create({
     },
     listItem: {
         backgroundColor: colors.primary,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        flexDirection: 'row', // Arrange children in a row
+        justifyContent: 'space-between', // Space items evenly
         alignItems: 'center',
         marginVertical: 8,
         marginHorizontal: 16,
@@ -23,7 +23,7 @@ export const listScreenStyles = StyleSheet.create({
         },
         shadowOpacity: 0.23,
         shadowRadius: 2.62,
-        elevation: 4,
+        elevation: 4,  // Elevation for Android shadow effect
     },
     itemType: {
         fontSize: 18,
@@ -33,8 +33,8 @@ export const listScreenStyles = StyleSheet.create({
     },
     detailsContainer: {
         flexDirection: 'row',
-        alignItems: 'center',
-        marginRight: -6,
+        alignItems: 'center', // Center detail items vertically
+        marginRight: -6, // Negative margin to adjust spacing
     },
     detailBox: {
         backgroundColor: colors.white,
@@ -50,7 +50,7 @@ export const listScreenStyles = StyleSheet.create({
         marginLeft: 5,
     },
     typeContainer: {
-        flexDirection: 'row',
+        flexDirection: 'row', // Arrange type items in a row
         alignItems: 'center',
         flex: 1,
     },
