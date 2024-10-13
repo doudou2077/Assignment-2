@@ -15,6 +15,7 @@ export default function AddDietScreen() {
     const [description, setDescription] = useState('');
     const [calories, setCalories] = useState('');
     const [date, setDate] = useState(null);
+    const [showDatePicker, setShowDatePicker] = useState(false);
 
 
     const handleCancel = () => {
@@ -44,22 +45,22 @@ export default function AddDietScreen() {
         <View style={[sharedStyles.container, { backgroundColor: theme.backgroundColor }]}>
             <View style={sharedStyles.headerContainer}>
                 <View style={sharedStyles.headerTextContainer}>
-                    <Text style={sharedStyles.headerText}>Add Diet Entry</Text>
+                    <Text style={[sharedStyles.headerText, { color: theme.textColor }]}>Add Diet Entry</Text>
                 </View>
                 <TouchableOpacity
                     style={sharedStyles.goBackButton}
                     onPress={handleCancel}
                 >
-                    <AntDesign name="left" size={24} style={sharedStyles.goBackButtonText} />
+                    <AntDesign name="left" size={24} style={[sharedStyles.goBackButtonText, { color: theme.textColor }]} />
                 </TouchableOpacity>
             </View>
 
             <TouchableWithoutFeedback>
                 <View style={sharedStyles.centeredContainer}>
                     <View style={sharedStyles.formElement}>
-                        <Text style={sharedStyles.label}>Description *</Text>
+                        <Text style={[sharedStyles.label, { color: theme.textColor }]}>Description *</Text>
                         <TextInput
-                            style={[styles.input, styles.descriptionInput]}
+                            style={[styles.input, styles.descriptionInput, { color: theme.textColor }]}
                             value={description}
                             onChangeText={setDescription}
                             placeholder=""
@@ -71,9 +72,9 @@ export default function AddDietScreen() {
                     </View>
 
                     <View style={sharedStyles.formElement}>
-                        <Text style={sharedStyles.label}>Calories *</Text>
+                        <Text style={[sharedStyles.label, { color: theme.textColor }]}>Calories *</Text>
                         <TextInput
-                            style={styles.input}
+                            style={[styles.input, { color: theme.textColor }]}
                             value={calories}
                             onChangeText={setCalories}
                             placeholder=""
@@ -84,8 +85,11 @@ export default function AddDietScreen() {
 
                     <View style={sharedStyles.formElement}>
                         <DatePicker
+                            theme={theme}
                             date={date}
                             setDate={setDate}
+                            setShowDatePicker={setShowDatePicker}
+                            showDatePicker={showDatePicker}
                             label="Date *"
                         />
                     </View>
@@ -119,7 +123,7 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     descriptionInput: {
-        height: 100,
+        height: 75,
         textAlignVertical: 'top',  // Align text to the top
     },
 });
