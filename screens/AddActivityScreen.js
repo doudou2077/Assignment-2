@@ -57,7 +57,7 @@ export default function AddActivityScreen() {
                     style={sharedStyles.goBackButton}
                     onPress={() => handleCancel()}
                 >
-                    <AntDesign name="left" size={24} style={sharedStyles.goBackButtonText} />
+                    <AntDesign name="left" size={24} style={[sharedStyles.goBackButtonText, { color: theme.textColor }]} />
                 </TouchableOpacity>
             </View>
 
@@ -69,7 +69,7 @@ export default function AddActivityScreen() {
             >
                 <View style={sharedStyles.centeredContainer}>
                     <View style={[sharedStyles.formElement, { zIndex: open ? 3000 : 1 }]}>
-                        <Text style={sharedStyles.label}>Activity *</Text>
+                        <Text style={[sharedStyles.label, { color: theme.textColor }]}>Activity *</Text>
                         <DropDownPicker
                             open={open}
                             value={activityType}
@@ -95,9 +95,9 @@ export default function AddActivityScreen() {
                     </View>
 
                     <View style={[sharedStyles.formElement, { zIndex: open ? 1 : 1000 }]}>
-                        <Text style={sharedStyles.label}>Duration(mins) *</Text>
+                        <Text style={[sharedStyles.label, { color: theme.textColor }]}>Duration(mins) *</Text>
                         <TextInput
-                            style={styles.durationInput}
+                            style={[styles.durationInput, { color: theme.textColor }]}
                             placeholder=''
                             keyboardType='numeric'
                             value={duration}
@@ -113,6 +113,7 @@ export default function AddActivityScreen() {
                             setShowDatePicker={setShowDatePicker}
                             showDatePicker={showDatePicker}
                             label="Date *"
+                            theme={theme}
                         />
                     </View>
 
