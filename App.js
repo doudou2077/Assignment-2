@@ -7,8 +7,7 @@ import DietScreen from './screens/DietScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import AddActivityScreen from './screens/AddActivityScreen';
 import AddDietScreen from './screens/AddDietScreen';
-import { ActivityProvider } from './context/ActivityContext';
-import { DietProvider } from './context/DietContext';
+import { CombinedProvider } from './context/CombinedContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
@@ -59,44 +58,42 @@ function DietStack() {
 export default function App() {
   return (
     <SafeAreaProvider>
-      <ActivityProvider>
-        <DietProvider>
-          <ThemeProvider>
-            <NavigationContainer>
-              <Tab.Navigator
-                screenOptions={({ route }) => ({
-                  tabBarStyle: {
-                    backgroundColor: '#4A55A2',
-                  },
-                  tabBarActiveTintColor: '#FFF59D',
-                  tabBarInactiveTintColor: 'white',
-                  headerShown: false,
-                  tabBarIcon: ({ color, size }) => {
-                    let iconName;
-                    let IconComponent = Ionicons;
+      <ThemeProvider>
+        <CombinedProvider>
+          <NavigationContainer>
+            <Tab.Navigator
+              screenOptions={({ route }) => ({
+                tabBarStyle: {
+                  backgroundColor: '#4A55A2',
+                },
+                tabBarActiveTintColor: '#FFF59D',
+                tabBarInactiveTintColor: 'white',
+                headerShown: false,
+                tabBarIcon: ({ color, size }) => {
+                  let iconName;
+                  let IconComponent = Ionicons;
 
-                    if (route.name === 'Activities') {
-                      IconComponent = FontAwesome5;
-                      iconName = 'running';
-                    } else if (route.name === 'Diet') {
-                      iconName = 'fast-food';
-                    } else if (route.name === 'Settings') {
-                      iconName = 'settings';
-                    }
+                  if (route.name === 'Activities') {
+                    IconComponent = FontAwesome5;
+                    iconName = 'running';
+                  } else if (route.name === 'Diet') {
+                    iconName = 'fast-food';
+                  } else if (route.name === 'Settings') {
+                    iconName = 'settings';
+                  }
 
-                    // Use the focused state to adjust the icon's appearance
-                    return <IconComponent name={iconName} size={size} color={color} />;
-                  },
-                })}
-              >
-                <Tab.Screen name="Activities" component={ActivitiesStack} options={{ tabBarLabel: 'Activities' }} />
-                <Tab.Screen name="Diet" component={DietStack} options={{ tabBarLabel: 'Diet' }} />
-                <Tab.Screen name="Settings" component={SettingsScreen} options={{ tabBarLabel: 'Settings' }} />
-              </Tab.Navigator>
-            </NavigationContainer>
-          </ThemeProvider>
-        </DietProvider>
-      </ActivityProvider>
+                  // Use the focused state to adjust the icon's appearance
+                  return <IconComponent name={iconName} size={size} color={color} />;
+                },
+              })}
+            >
+              <Tab.Screen name="Activities" component={ActivitiesStack} options={{ tabBarLabel: 'Activities' }} />
+              <Tab.Screen name="Diet" component={DietStack} options={{ tabBarLabel: 'Diet' }} />
+              <Tab.Screen name="Settings" component={SettingsScreen} options={{ tabBarLabel: 'Settings' }} />
+            </Tab.Navigator>
+          </NavigationContainer>
+        </CombinedProvider>
+      </ThemeProvider>
     </SafeAreaProvider>
   );
 }

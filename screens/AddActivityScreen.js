@@ -2,7 +2,7 @@ import { View, Text, TextInput, StyleSheet, TouchableOpacity, TouchableWithoutFe
 import React, { useState } from 'react'
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useNavigation } from '@react-navigation/native';
-import { useActivityContext } from '../context/ActivityContext';
+import { useCombinedContext } from '../context/CombinedContext';
 import DatePicker from '../components/DatePicker';
 import { sharedStyles, colors } from '../helperFile/sharedStyles';
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -10,7 +10,7 @@ import { useTheme } from '../context/ThemeContext';
 
 export default function AddActivityScreen() {
     const navigation = useNavigation();
-    const { addActivity } = useActivityContext();
+    const { addActivity } = useCombinedContext();
     const { theme } = useTheme();
 
     const handleCancel = () => {

@@ -1,13 +1,13 @@
 import React, { useLayoutEffect } from 'react';
 import { View, Button, StyleSheet, StatusBar, TouchableOpacity, Text } from 'react-native';
-import { useDietContext } from '../context/DietContext';
+import { useCombinedContext } from '../context/CombinedContext';
 import ItemsList from '../components/ItemList';
 import { useTheme } from '../context/ThemeContext';
 import { sharedStyles, colors } from '../helperFile/sharedStyles';
 import { listScreenStyles } from '../helperFile/listScreenStyles';
 
 export default function DietScreen({ navigation }) {
-    const { dietEntries } = useDietContext();
+    const { dietEntries } = useCombinedContext();
     const { theme } = useTheme();
 
     return (

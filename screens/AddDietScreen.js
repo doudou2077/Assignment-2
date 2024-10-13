@@ -1,15 +1,15 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, Alert, StyleSheet } from 'react-native';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import DatePicker from '../components/DatePicker';
-import { useDietContext } from '../context/DietContext';
+import { useCombinedContext } from '../context/CombinedContext';
 import { sharedStyles, colors } from '../helperFile/sharedStyles';
 import { useTheme } from '../context/ThemeContext';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 export default function AddDietScreen() {
     const navigation = useNavigation();
-    const { addDietEntry } = useDietContext();
+    const { addDietEntry } = useCombinedContext();
     const { theme } = useTheme();
 
     const [description, setDescription] = useState('');

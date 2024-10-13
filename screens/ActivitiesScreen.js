@@ -1,13 +1,13 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StatusBar } from 'react-native';
-import { useActivityContext } from '../context/ActivityContext';
+import { useCombinedContext } from '../context/CombinedContext';
 import ItemsList from '../components/ItemList';
 import { useTheme } from '../context/ThemeContext';
 import { sharedStyles, colors } from '../helperFile/sharedStyles';
 import { listScreenStyles } from '../helperFile/listScreenStyles';
 
 export default function ActivitiesScreen({ navigation }) {
-    const { activities } = useActivityContext();
+    const { activities } = useCombinedContext();
     const { theme } = useTheme();
 
     return (
