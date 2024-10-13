@@ -45,7 +45,7 @@ export default function AddDietScreen() {
         <View style={[sharedStyles.container, { backgroundColor: theme.backgroundColor }]}>
             <View style={sharedStyles.headerContainer}>
                 <View style={sharedStyles.headerTextContainer}>
-                    <Text style={[sharedStyles.headerText, { color: theme.textColor }]}>Add Diet Entry</Text>
+                    <Text style={sharedStyles.headerText}>Add Diet Entry</Text>
                 </View>
                 <TouchableOpacity
                     style={sharedStyles.goBackButton}
