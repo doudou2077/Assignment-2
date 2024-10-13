@@ -88,6 +88,7 @@ export default function AddActivityScreen() {
                             style={styles.dropdown}
                             zIndex={3000}
                             zIndexInverse={1000}
+                            textStyle={{ color: theme.textColor }}
                             dropDownContainerStyle={{
                                 maxHeight: 210,
                             }}
