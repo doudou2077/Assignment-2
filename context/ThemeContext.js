@@ -12,6 +12,7 @@ export const ThemeProvider = ({ children }) => {
 
     const theme = {
         backgroundColor: isDarkMode ? colors.darkMode : colors.background,
+        textColor: isDarkMode ? colors.white : colors.text,
     };
 
     return (
