@@ -15,13 +15,7 @@ export default function AddDietScreen() {
     const [description, setDescription] = useState('');
     const [calories, setCalories] = useState('');
     const [date, setDate] = useState(null);
-    const [currentTheme, setCurrentTheme] = useState(theme);
 
-    useFocusEffect(
-        useCallback(() => {
-            setCurrentTheme(theme);
-        }, [theme])
-    );
 
     const handleCancel = () => {
         navigation.goBack();
@@ -47,7 +41,7 @@ export default function AddDietScreen() {
     };
 
     return (
-        <View style={[sharedStyles.container, { backgroundColor: currentTheme.backgroundColor }]}>
+        <View style={[sharedStyles.container, { backgroundColor: theme.backgroundColor }]}>
             <View style={sharedStyles.headerContainer}>
                 <View style={sharedStyles.headerTextContainer}>
                     <Text style={sharedStyles.headerText}>Add Diet Entry</Text>
