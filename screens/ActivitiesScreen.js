@@ -26,7 +26,6 @@ export default function ActivitiesScreen({ navigation }) {
                 </TouchableOpacity>
             </View>
             <View style={[listScreenStyles.listContainer, { backgroundColor: theme.backgroundColor }]}>
-                {/* Rendering the ItemsList component with activity entries */}
                 <ItemsList items={activities} type="activity" theme={theme} />
             </View>
         </View>

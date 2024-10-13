@@ -27,7 +27,6 @@ export default function DietScreen({ navigation }) {
                 </TouchableOpacity>
             </View>
             <View style={[listScreenStyles.listContainer]}>
-                {/* Rendering the ItemsList component with diet entries */}
                 <ItemsList items={dietEntries} type="diet" />
             </View>
         </View >

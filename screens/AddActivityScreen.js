@@ -69,7 +69,6 @@ export default function AddActivityScreen() {
                 }}
             >
                 <View style={sharedStyles.centeredContainer}>
-                    {/* Dropdown for selecting activity type */}
                     <View style={[sharedStyles.formElement, { zIndex: open ? 3000 : 1 }]}>
                         <Text style={[sharedStyles.label, { color: theme.textColor }]}>Activity *</Text>
                         <DropDownPicker
@@ -109,7 +108,6 @@ export default function AddActivityScreen() {
                         />
                     </View>
 
-                    {/* DatePicker component for selecting the date */}
                     <View style={[sharedStyles.formElement, { zIndex: open ? 1 : 1000 }]}>
                         <DatePicker
                             date={date}
@@ -122,7 +120,6 @@ export default function AddActivityScreen() {
                     </View>
 
                     <View style={sharedStyles.buttonContainer}>
-                        {/* Cancel button */}
                         <TouchableOpacity
                             style={[sharedStyles.button, { backgroundColor: colors.secondary }]}
                             onPress={handleCancel}
@@ -130,7 +127,6 @@ export default function AddActivityScreen() {
                             <Text style={sharedStyles.buttonText}>Cancel</Text>
                         </TouchableOpacity>
 
-                        {/* Save button */}
                         <TouchableOpacity
                             style={[sharedStyles.button, { backgroundColor: colors.primary }]}
                             onPress={handleSave}>

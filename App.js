@@ -60,10 +60,10 @@ function DietStack() {
 // Main App component
 export default function App() {
   return (
-    <SafeAreaProvider> {/* Providing safe area context */}
-      <ThemeProvider> {/* Providing theme context */}
-        <CombinedProvider> {/* Providing combined context for diet and activity entries */}
-          <NavigationContainer>  {/* Wrapping the app in a navigation container */}
+    <SafeAreaProvider>
+      <ThemeProvider>
+        <CombinedProvider>
+          <NavigationContainer>
             <Tab.Navigator
               screenOptions={({ route }) => ({
                 tabBarStyle: {
@@ -91,7 +91,6 @@ export default function App() {
                 },
               })}
             >
-              {/* Defining the tab screens */}
               <Tab.Screen name="Activities" component={ActivitiesStack} options={{ tabBarLabel: 'Activities' }} />
               <Tab.Screen name="Diet" component={DietStack} options={{ tabBarLabel: 'Diet' }} />
               <Tab.Screen name="Settings" component={SettingsScreen} options={{ tabBarLabel: 'Settings' }} />

@@ -88,7 +88,6 @@ export default function AddDietScreen() {
                     </View>
 
                     <View style={sharedStyles.formElement}>
-                        {/* DatePicker component for selecting the date */}
                         <DatePicker
                             theme={theme}
                             date={date}
@@ -100,7 +99,6 @@ export default function AddDietScreen() {
                     </View>
 
                     <View style={sharedStyles.buttonContainer}>
-                        {/* Cancel button */}
                         <TouchableOpacity
                             style={[sharedStyles.button, { backgroundColor: colors.secondary }]}
                             onPress={handleCancel}
@@ -108,7 +106,6 @@ export default function AddDietScreen() {
                             <Text style={sharedStyles.buttonText}>Cancel</Text>
                         </TouchableOpacity>
 
-                        {/* Save button */}
                         <TouchableOpacity
                             style={[sharedStyles.button, { backgroundColor: colors.primary }]}
                             onPress={handleSave}
