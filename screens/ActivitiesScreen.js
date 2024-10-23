@@ -5,10 +5,14 @@ import ItemsList from '../components/ItemList';
 import { useTheme } from '../context/ThemeContext';
 import { sharedStyles, colors } from '../helperFile/sharedStyles';
 import { listScreenStyles } from '../helperFile/listScreenStyles';
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 export default function ActivitiesScreen({ navigation }) {
-    const { activities } = useCombinedContext(); // Accessing activity entries from the combined context
-    const { theme } = useTheme();// Accessing the current theme from the theme context
+    const { activities } = useCombinedContext();
+    const { theme } = useTheme();
+
+    const navigateToAddActivity = () => navigation.navigate('AddActivity');
 
     return (
         <View style={[sharedStyles.container, { backgroundColor: theme.backgroundColor }]}>
@@ -19,10 +23,15 @@ export default function ActivitiesScreen({ navigation }) {
                     <Text style={sharedStyles.headerText}>Activities</Text>
                 </View>
                 <TouchableOpacity
-                    style={sharedStyles.addButton}
-                    onPress={() => navigation.navigate('AddActivity')} // Navigate to the AddActivity screen on press
+                    style={sharedStyles.iconContainer}
+                    onPress={navigateToAddActivity}
                 >
-                    <Text style={sharedStyles.addButtonText}>Add</Text>
+                    <View style={sharedStyles.iconButton}>
+                        <FontAwesome6 name="plus" size={24} color={colors.white} />
+                    </View>
+                    <View style={sharedStyles.iconButton}>
+                        <MaterialCommunityIcons name="run" size={24} color={colors.white} />
+                    </View>
                 </TouchableOpacity>
             </View>
             <View style={[listScreenStyles.listContainer, { backgroundColor: theme.backgroundColor }]}>
