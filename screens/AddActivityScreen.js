@@ -2,15 +2,15 @@ import { View, Text, TextInput, StyleSheet, TouchableOpacity, TouchableWithoutFe
 import React, { useState } from 'react'
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useNavigation } from '@react-navigation/native';
-import { useCombinedContext } from '../context/CombinedContext';
 import DatePicker from '../components/DatePicker';
 import { sharedStyles, colors } from '../helperFile/sharedStyles';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useTheme } from '../context/ThemeContext';
+import { writeToDB } from '../firebase/firebaseHelper';
+
 
 export default function AddActivityScreen() {
     const navigation = useNavigation();
-    const { addActivity } = useCombinedContext();
     const { theme } = useTheme();
 
     const handleCancel = () => {
@@ -29,7 +29,7 @@ export default function AddActivityScreen() {
     const [showDatePicker, setShowDatePicker] = useState(false);
 
     // Function to handle saving the activity entry
-    const handleSave = () => {
+    const handleSave = async () => {
         const durationNumber = Number(duration);
         if (!activityType || !duration || isNaN(durationNumber) || durationNumber <= 0 || !date) {
             Alert.alert('Invalid Input', 'Please check your input values');
@@ -37,15 +37,19 @@ export default function AddActivityScreen() {
         }
         // Create a new activity object
         const newActivity = {
-            id: Date.now(),
             type: activityType,
             duration: durationNumber,
-            date: date,
+            date: date.toISOString(), // convert date to string for firestore
         };
 
-        addActivity(newActivity);
-        console.log('Activity saved:', newActivity);
-        navigation.goBack();
+        try {
+            await writeToDB(newActivity, 'activities');
+            console.log('Activity saved:', newActivity);
+            navigation.goBack();
+        } catch (error) {
+            console.log('Error saving activity:', error);
+            Alert.alert('Error', 'Failed to save activity.')
+        }
     }
 
     return (
