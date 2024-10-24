@@ -8,6 +8,7 @@ import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { listentoCollection } from '../firebase/firebaseHelper';
 
+
 export default function ActivitiesScreen({ navigation }) {
     const [activities, setActivities] = useState([]);
     const { theme } = useTheme();
@@ -22,6 +23,11 @@ export default function ActivitiesScreen({ navigation }) {
 
     const navigateToAddActivity = () => navigation.navigate('AddActivity');
 
+    const handleItemPress = (item) => {
+        navigation.navigate('AddActivity', { activity: item });
+    };
+
+    <ItemsList items={activities} type="activity" theme={theme} onItemPress={handleItemPress} />
     return (
         <View style={[sharedStyles.container, { backgroundColor: theme.backgroundColor }]}>
             <StatusBar backgroundColor={colors.primary} barStyle={theme.isDarkMode ? "light-content" : "dark-content"} />
@@ -43,7 +49,12 @@ export default function ActivitiesScreen({ navigation }) {
                 </TouchableOpacity>
             </View>
             <View style={[listScreenStyles.listContainer, { backgroundColor: theme.backgroundColor }]}>
-                <ItemsList items={activities} type="activity" theme={theme} />
+                <ItemsList
+                    items={activities}
+                    type="activity"
+                    theme={theme}
+                    onItemPress={handleItemPress}
+                />
             </View>
         </View>
     );
