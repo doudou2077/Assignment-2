@@ -1,16 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StatusBar } from 'react-native';
-import { useCombinedContext } from '../context/CombinedContext';
 import ItemsList from '../components/ItemList';
 import { useTheme } from '../context/ThemeContext';
 import { sharedStyles, colors } from '../helperFile/sharedStyles';
 import { listScreenStyles } from '../helperFile/listScreenStyles';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { listentoCollection } from '../firebase/firebaseHelper';
 
 export default function ActivitiesScreen({ navigation }) {
-    const { activities } = useCombinedContext();
+    const [activities, setActivities] = useState([]);
     const { theme } = useTheme();
+
+    useEffect(() => {
+        const unsubscribe = listentoCollection('activities', (updatedActivities) => {
+            setActivities(updatedActivities)
+        })
+        // Cleanup function to unsubscribe when component unmounts
+        return () => unsubscribe()
+    }, [])
 
     const navigateToAddActivity = () => navigation.navigate('AddActivity');
 
