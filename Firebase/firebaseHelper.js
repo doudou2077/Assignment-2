@@ -1,14 +1,19 @@
 import { addDoc, collection, doc, deleteDoc, onSnapshot, query, orderBy } from "firebase/firestore";
 import { database } from "./firebaseSetup";
 
-export async function listentoCollection(collectionPath, onUpdate) {
+export function listentoCollection(collectionPath, onUpdate) {
     const collectionRef = collection(database, collectionPath);
     const q = query(collectionRef, orderBy("date", "desc")); // Order by date, most recent first
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const items = [];
         querySnapshot.forEach((doc) => {
-            items.push({ id: doc.id, ...doc.data() });
+            const data = doc.data();
+            // Convert the date string to a Date object
+            if (data.date) {
+                data.date = new Date(data.date);
+            }
+            items.push({ id: doc.id, ...data });
         });
         onUpdate(items);
     }, (error) => {
