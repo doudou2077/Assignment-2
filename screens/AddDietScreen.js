@@ -2,15 +2,14 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, Alert, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import DatePicker from '../components/DatePicker';
-import { useCombinedContext } from '../context/CombinedContext';
 import { sharedStyles, colors } from '../helperFile/sharedStyles';
 import { useTheme } from '../context/ThemeContext';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { writeToDB } from '../firebase/firebaseHelper';
 
 export default function AddDietScreen() {
     const navigation = useNavigation();
     // Accessing the function to add a diet entry from context
-    const { addDietEntry } = useCombinedContext();
     const { theme } = useTheme();
 
     // State variables for form inputs
@@ -25,7 +24,7 @@ export default function AddDietScreen() {
     };
 
     // Function to handle saving the diet entry
-    const handleSave = () => {
+    const handleSave = async () => {
         const caloriesNumber = Number(calories);
         if (!description || !calories || !date || isNaN(caloriesNumber) || caloriesNumber <= 0) {
             Alert.alert('Invalid Input', 'Please check your input values');
@@ -34,15 +33,19 @@ export default function AddDietScreen() {
 
         // Create a new diet entry object
         const newDietEntry = {
-            id: Date.now(),
             description,
             calories: caloriesNumber,
-            date,
+            date: date.toISOString(),
         };
+        try {
+            await writeToDB(newDietEntry, 'diet');
+            console.log('Diet entry saved:', newDietEntry);
+            navigation.goBack();
+        } catch (error) {
+            console.log('Error saving diet entry:', error);
+            Alert.alert('Error', 'Failed to save diet entry.')
 
-        addDietEntry(newDietEntry);
-        console.log('Diet entry saved:', newDietEntry);
-        navigation.goBack();
+        }
     };
 
     return (
