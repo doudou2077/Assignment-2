@@ -1,5 +1,22 @@
-import { addDoc, collection, doc, deleteDoc } from "firebase/firestore";
+import { addDoc, collection, doc, deleteDoc, onSnapshot, query, orderBy } from "firebase/firestore";
 import { database } from "./firebaseSetup";
+
+export async function listentoCollection(collectionPath, onUpdate) {
+    const collectionRef = collection(database, collectionPath);
+    const q = query(collectionRef, orderBy("date", "desc")); // Order by date, most recent first
+
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const items = [];
+        querySnapshot.forEach((doc) => {
+            items.push({ id: doc.id, ...doc.data() });
+        });
+        onUpdate(items);
+    }, (error) => {
+        console.error("Error listening to collection:", error);
+    });
+
+    return unsubscribe;
+}
 
 export async function writeToDB(data, collectionPath) {
     try {
