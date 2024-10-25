@@ -11,15 +11,22 @@ export default function AddDietScreen({ navigation, route }) {
     const { theme } = useTheme();
     const { params } = route;
 
-    // State variables for form inputs
-    const [description, setDescription] = useState('');
-    const [calories, setCalories] = useState('');
-    const [date, setDate] = useState(null);
-    const [showDatePicker, setShowDatePicker] = useState(false);
-
     // Check if we're editing an existing diet entry
     const isEditMode = params?.dietEntry != undefined;
     const dietEntry = params?.dietEntry || {};
+
+    // State variables for form inputs
+    const [description, setDescription] = useState(dietEntry.description || '');
+    const [calories, setCalories] = useState(dietEntry.calories ? dietEntry.calories.toString() : '');
+    const [date, setDate] = useState(dietEntry.date ? new Date(dietEntry.date) : null);
+    const [showDatePicker, setShowDatePicker] = useState(false);
+    const [isSpecial, setIsSpecial] = useState(dietEntry.isSpecial || false);
+
+
+    const isSpecialDiet = (calories) => {
+        return calories > 800;
+    };
+
 
     // Function to handle cancel action
     const handleCancel = () => {
@@ -39,6 +46,7 @@ export default function AddDietScreen({ navigation, route }) {
             description,
             calories: caloriesNumber,
             date: date.toISOString(),
+            isSpecial: isEditMode ? isSpecial : isSpecialDiet(caloriesNumber)
         };
 
         if (isEditMode) {
@@ -85,15 +93,16 @@ export default function AddDietScreen({ navigation, route }) {
     return (
         <View style={[sharedStyles.container, { backgroundColor: theme.backgroundColor }]}>
             <View style={sharedStyles.headerContainer}>
-                <View style={sharedStyles.headerTextContainer}>
-                    <Text style={sharedStyles.headerText}>Add Diet Entry</Text>
-                </View>
                 <TouchableOpacity
                     style={sharedStyles.goBackButton}
                     onPress={handleCancel}
                 >
                     <AntDesign name="left" size={24} style={[sharedStyles.goBackButtonText, { color: theme.textColor }]} />
                 </TouchableOpacity>
+                <View style={sharedStyles.headerTextContainer}>
+                    <Text style={sharedStyles.headerText}>{isEditMode ? 'Edit' : 'Add Diet Entry'}</Text>
+                </View>
+
             </View>
 
             <TouchableWithoutFeedback>
@@ -134,6 +143,18 @@ export default function AddDietScreen({ navigation, route }) {
                             label="Date *"
                         />
                     </View>
+                    {isEditMode && isSpecialDiet(Number(calories)) && (
+                        <View style={styles.checkboxContainer}>
+                            <Checkbox
+                                value={isSpecial}
+                                onValueChange={setIsSpecial}
+                                color={isSpecial ? colors.primary : undefined}
+                            />
+                            <Text style={[styles.checkboxLabel, { color: theme.textColor }]}>
+                                This item is marked as special. Select the checkbox if you would like to approve it.
+                            </Text>
+                        </View>
+                    )}
 
                     <View style={sharedStyles.buttonContainer}>
                         <TouchableOpacity
