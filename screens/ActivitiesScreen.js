@@ -7,11 +7,23 @@ import { listScreenStyles } from '../helperFile/listScreenStyles';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { listentoCollection } from '../firebase/firebaseHelper';
-
+import { useIsFocused } from '@react-navigation/native';
 
 export default function ActivitiesScreen({ navigation }) {
     const [activities, setActivities] = useState([]);
     const { theme } = useTheme();
+    const isFocused = useIsFocused();
+
+    useEffect(() => {
+        if (isFocused) {
+            navigation.getParent()?.setOptions({
+                tabBarStyle: {
+                    display: 'flex',
+                    backgroundColor: '#4A55A2'
+                }
+            });
+        }
+    }, [isFocused, navigation]);
 
     useEffect(() => {
         const unsubscribe = listentoCollection('activities', (updatedActivities) => {
