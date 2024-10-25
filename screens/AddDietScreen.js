@@ -34,6 +34,34 @@ export default function AddDietScreen({ navigation, route }) {
         navigation.goBack();
     };
 
+
+    const handleDelete = () => {
+        Alert.alert(
+            "Delete",
+            "Are you sure you want to delete this diet entry?",
+            [
+                {
+                    text: "No",
+                    style: "cancel"
+                },
+                {
+                    text: "Yes",
+                    onPress: async () => {
+                        try {
+                            await deleteFromDB(dietEntry.id, 'diet');
+                            console.log('Diet entry deleted:', dietEntry.id);
+                            navigation.goBack();
+                        } catch (error) {
+                            console.log('Error deleting diet entry:', error);
+                            Alert.alert('Error', 'Failed to delete diet entry.');
+                        }
+                    },
+                    style: 'destructive'
+                }
+            ]
+        );
+    };
+
     // Function to handle saving the diet entry
     const handleSave = async () => {
         const caloriesNumber = Number(calories);
@@ -101,8 +129,17 @@ export default function AddDietScreen({ navigation, route }) {
                     <AntDesign name="left" size={24} style={[sharedStyles.goBackButtonText, { color: 'white' }]} />
                 </TouchableOpacity>
                 <View style={sharedStyles.headerTextContainer}>
-                    <Text style={sharedStyles.headerText}>{isEditMode ? 'Edit' : 'Add Diet Entry'}</Text>
+                    <Text style={styles.headerText}>{isEditMode ? 'Edit' : 'Add Diet Entry'}</Text>
                 </View>
+                {isEditMode && (
+                    <TouchableOpacity
+                        style={styles.deleteButton}
+                        onPress={handleDelete}
+                    >
+                        <AntDesign name="delete" size={24} color="white" style={{ paddingTop: 10 }} />
+                    </TouchableOpacity>
+                )}
+
 
             </View>
 
@@ -179,6 +216,14 @@ export default function AddDietScreen({ navigation, route }) {
 }
 
 const styles = StyleSheet.create({
+    headerText: {
+        color: colors.white,
+        fontSize: 20,
+        fontWeight: 'bold',
+        paddingLeft: 20,
+        paddingTop: 10
+    },
+
     input: {
         borderColor: 'gray',
         borderWidth: 1,
