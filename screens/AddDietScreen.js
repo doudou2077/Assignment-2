@@ -5,6 +5,7 @@ import { sharedStyles, colors } from '../helperFile/sharedStyles';
 import { useTheme } from '../context/ThemeContext';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { writeToDB, deleteFromDB } from '../firebase/firebaseHelper';
+import Checkbox from 'expo-checkbox';
 
 export default function AddDietScreen({ navigation, route }) {
 
@@ -97,7 +98,7 @@ export default function AddDietScreen({ navigation, route }) {
                     style={sharedStyles.goBackButton}
                     onPress={handleCancel}
                 >
-                    <AntDesign name="left" size={24} style={[sharedStyles.goBackButtonText, { color: theme.textColor }]} />
+                    <AntDesign name="left" size={24} style={[sharedStyles.goBackButtonText, { color: 'white' }]} />
                 </TouchableOpacity>
                 <View style={sharedStyles.headerTextContainer}>
                     <Text style={sharedStyles.headerText}>{isEditMode ? 'Edit' : 'Add Diet Entry'}</Text>
