@@ -1,42 +1,60 @@
 import React from 'react';
-import { View, Text, Switch, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
-import { sharedStyles } from '../helperFile/sharedStyles';
+import { sharedStyles, colors } from '../helperFile/sharedStyles';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-// SettingsScreen component for managing application settings
 export default function SettingsScreen() {
-    const { isDarkMode, toggleTheme, theme } = useTheme(); // Accessing theme context values
+    const { isDarkMode, toggleTheme, theme } = useTheme();
 
     return (
         <View style={[sharedStyles.container, { backgroundColor: theme.backgroundColor }]}>
             <View style={sharedStyles.headerContainer}>
-                <View style={sharedStyles.headerTextContainer}>
+                <View style={styles.headerTextContainer}>
                     <Text style={sharedStyles.headerText}>Settings</Text>
                 </View>
             </View>
             <View style={styles.content}>
-                <Text style={styles.text}>Toggle Theme</Text>
-                <Switch
-                    value={isDarkMode} // Current value of the switch based on dark mode state
-                    onValueChange={toggleTheme} // Function to toggle the theme on switch change
-                />
+                <Pressable
+                    style={({ pressed }) => [
+                        styles.themeToggle,
+                        { backgroundColor: pressed ? colors.primary : colors.secondary }
+                    ]}
+                    onPress={toggleTheme}
+                >
+                    <MaterialCommunityIcons
+                        name={isDarkMode ? 'weather-night' : 'weather-sunny'}
+                        size={24}
+                        color={colors.white}
+                    />
+                    <Text style={styles.toggleText}>
+                        {isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                    </Text>
+                </Pressable>
             </View>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
+    headerTextContainer: {
+        paddingLeft: 70,
+    },
     content: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center', textShadowColor: '#585858',
-        textShadowOffset: { width: 5, height: 5 },
-        textShadowRadius: 10,
+        justifyContent: 'center',
     },
-    text: {
+    themeToggle: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 15,
+        borderRadius: 10,
+    },
+    toggleText: {
+        marginLeft: 10,
         fontSize: 18,
-        marginBottom: 10,
-        color: '#FFFFD0',
+        color: colors.white,
         fontWeight: 'bold',
     },
 });
