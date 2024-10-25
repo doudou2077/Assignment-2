@@ -24,7 +24,7 @@ export default function DietScreen({ navigation }) {
     const navigateToAddDiet = () => navigation.navigate('AddDiet');
 
     const handleItemPress = (item) => {
-        navigation.navigate('AddDiet', { activity: item })
+        navigation.navigate('AddDiet', { dietEntry: item })
     }
 
     return (
