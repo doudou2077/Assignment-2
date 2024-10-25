@@ -33,7 +33,11 @@ function ActivitiesStack() {
       <Stack.Screen
         name="AddActivity"
         component={AddActivityScreen}
-        options={{ title: 'Add An Activity' }}
+        options={({ navigation }) => ({
+          tabBarStyle: { display: 'none' },
+          title: 'Add An Activity',
+          tabBarButton: () => null,
+        })}
       />
     </Stack.Navigator>
   );
@@ -51,7 +55,11 @@ function DietStack() {
       <Stack.Screen
         name="AddDiet"
         component={AddDietScreen}
-        options={{ title: 'Add A Diet Entry' }}
+        options={({ navigation }) => ({
+          tabBarStyle: { display: 'none' },
+          title: 'Add A Diet Entry',
+          tabBarButton: () => null,
+        })}
       />
     </ Stack.Navigator>
   );
@@ -69,7 +77,7 @@ export default function App() {
                 tabBarStyle: {
                   backgroundColor: '#4A55A2',
                 },
-                tabBarActiveTintColor: '#FFF59D',
+                tabBarActiveTintColor: '#F0E68C',
                 tabBarInactiveTintColor: 'white',
                 headerShown: false,
                 tabBarIcon: ({ color, size }) => {
@@ -88,6 +96,25 @@ export default function App() {
 
                   // Use the focused state to adjust the icon's appearance
                   return <IconComponent name={iconName} size={size} color={color} />;
+                },
+              })}
+
+              screenListeners={({ navigation }) => ({
+                state: (e) => {
+                  const currentRoute = e.data.state.routes[e.data.state.index];
+                  if (currentRoute.state && currentRoute.state.routes) {
+                    const currentNestedRoute = currentRoute.state.routes[currentRoute.state.index];
+                    if (currentNestedRoute.name === 'AddActivity' || currentNestedRoute.name === 'AddDiet') {
+                      navigation.setOptions({ tabBarStyle: { display: 'none' } });
+                    } else {
+                      navigation.setOptions({
+                        tabBarStyle: {
+                          display: 'flex',
+                          backgroundColor: '#4A55A2'
+                        }
+                      });
+                    }
+                  }
                 },
               })}
             >
