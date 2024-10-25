@@ -23,6 +23,10 @@ export default function DietScreen({ navigation }) {
 
     const navigateToAddDiet = () => navigation.navigate('AddDiet');
 
+    const handleItemPress = (item) => {
+        navigation.navigate('AddDiet', { activity: item })
+    }
+
     return (
         <View style={[sharedStyles.container, { backgroundColor: theme.backgroundColor }]}>
             <StatusBar backgroundColor={colors.primary} barStyle="light-content" />
@@ -43,7 +47,10 @@ export default function DietScreen({ navigation }) {
                 </TouchableOpacity>
             </View>
             <View style={[listScreenStyles.listContainer]}>
-                <ItemsList items={diets} type="diet" />
+                <ItemsList
+                    items={diets}
+                    type="diet"
+                    onItemPress={handleItemPress} />
             </View>
         </View >
     );
