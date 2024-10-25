@@ -1,5 +1,5 @@
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Alert } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import DatePicker from '../components/DatePicker';
@@ -9,14 +9,13 @@ import { useTheme } from '../context/ThemeContext';
 import { writeToDB, deleteFromDB } from '../firebase/firebaseHelper';
 import Checkbox from 'expo-checkbox';
 
-export default function AddActivityScreen() {
-    const navigation = useNavigation();
-    const route = useRoute();
+export default function AddActivityScreen({ navigation, route }) {
+    const { params } = route;
     const { theme } = useTheme();
 
     // Check if we're editing an existing activity
-    const isEditMode = route.params?.activity !== undefined;
-    const activity = route.params?.activity || {};
+    const isEditMode = params?.activity !== undefined;
+    const activity = params?.activity || {};
 
     // Initialize state
     const [activityType, setActivityType] = useState(activity.type || null);
