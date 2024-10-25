@@ -12,7 +12,7 @@ const ItemsList = ({ items, type, onItemPress }) => {
     };
 
     const isSpecialDiet = (item) => {
-        return item.calories > 800;
+        return item.calories > 800 && item.isSpecial;
     };
 
     const renderItem = ({ item }) => {
