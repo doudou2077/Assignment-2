@@ -54,11 +54,14 @@ export const sharedStyles = StyleSheet.create({
         position: 'absolute',
         left: 15,
         paddingTop: 40,
+        padding: 15,
+        zIndex: 1,
     },
     goBackButtonText: {
         color: colors.white,
-        fontSize: 16,
+        fontSize: 18,
         fontWeight: 'bold',
+        paddingTop: 20
     },
 
     centeredContainer: {
@@ -98,6 +101,11 @@ export const sharedStyles = StyleSheet.create({
         color: '#fff',
         fontSize: 16,
         fontWeight: 'bold',
+    },
+    deleteButton: {
+        position: 'absolute',
+        right: 15,
+        top: 50,
     },
 });
 
