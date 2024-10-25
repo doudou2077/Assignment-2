@@ -6,7 +6,7 @@ import DatePicker from '../components/DatePicker';
 import { sharedStyles, colors } from '../helperFile/sharedStyles';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useTheme } from '../context/ThemeContext';
-import { writeToDB } from '../firebase/firebaseHelper';
+import { writeToDB, deleteFromDB } from '../firebase/firebaseHelper';
 import Checkbox from 'expo-checkbox';
 
 export default function AddActivityScreen() {
@@ -24,7 +24,6 @@ export default function AddActivityScreen() {
     const [duration, setDuration] = useState(activity.duration?.toString() || '');
     const [date, setDate] = useState(activity.date ? new Date(activity.date) : null);
     const [showDatePicker, setShowDatePicker] = useState(false);
-
     const [isSpecial, setIsSpecial] = useState(activity.isSpecial || false);
 
     const isSpecialActivity = (type, duration) => {
@@ -32,9 +31,35 @@ export default function AddActivityScreen() {
         return (lowercaseType === 'running' || lowercaseType === 'weights') && duration > 60;
     };
 
-
     const handleCancel = () => {
         navigation.goBack();
+    };
+
+    const handleDelete = () => {
+        Alert.alert(
+            "Delete",
+            "Are you sure you want to delete this activity?",
+            [
+                {
+                    text: "No",
+                    style: "cancel"
+                },
+                {
+                    text: "Yes",
+                    onPress: async () => {
+                        try {
+                            await deleteFromDB(activity.id, 'activities');
+                            console.log('Activity deleted:', activity.id);
+                            navigation.goBack();
+                        } catch (error) {
+                            console.log('Error deleting activity:', error);
+                            Alert.alert('Error', 'Failed to delete activity.');
+                        }
+                    },
+                    style: 'destructive'
+                }
+            ]
+        );
     };
 
     const handleSave = () => {
@@ -76,7 +101,6 @@ export default function AddActivityScreen() {
                 ]
             );
         } else {
-            // For adding a new activity, save directly without showing an alert
             writeToDB(newActivity, 'activities')
                 .then(() => {
                     console.log('Activity saved:', newActivity);
@@ -89,33 +113,40 @@ export default function AddActivityScreen() {
         }
     };
 
-
     return (
         <View style={[sharedStyles.container, { backgroundColor: theme.backgroundColor }]}>
             <View style={sharedStyles.headerContainer}>
-                <View style={styles.headerTextContainer}>
-                    <Text style={sharedStyles.headerText}>{isEditMode ? 'Edit Activity' : 'Add Activity'}</Text>
-                </View>
                 <TouchableOpacity
                     style={sharedStyles.goBackButton}
                     onPress={handleCancel}
                 >
                     <AntDesign name="left" size={24} style={[sharedStyles.goBackButtonText, { color: 'white' }]} />
                 </TouchableOpacity>
+                <View style={styles.headerTextContainer}>
+                    <Text style={sharedStyles.headerText}>{isEditMode ? 'Edit' : 'Add Activity'}</Text>
+                </View>
+                {isEditMode && (
+                    <TouchableOpacity
+                        style={styles.deleteButton}
+                        onPress={handleDelete}
+                    >
+                        <AntDesign name="delete" size={24} color="white" />
+                    </TouchableOpacity>
+                )}
             </View>
 
             <TouchableWithoutFeedback
                 onPress={() => {
-                    if (open) setOpen(false); // Close dropdown picker
-                    if (showDatePicker) setShowDatePicker(false); // Close date picker
+                    if (open) setOpen(false);
+                    if (showDatePicker) setShowDatePicker(false);
                 }}
             >
                 <View style={sharedStyles.centeredContainer}>
                     <View style={[sharedStyles.formElement, { zIndex: open ? 3000 : 1 }]}>
                         <Text style={[sharedStyles.label, { color: theme.textColor }]}>Activity *</Text>
                         <DropDownPicker
-                            open={open} // Control dropdown visibility
-                            value={activityType} // Current selected value
+                            open={open}
+                            value={activityType}
                             items={[
                                 { label: 'Walking', value: 'walking' },
                                 { label: 'Running', value: 'running' },
@@ -172,8 +203,8 @@ export default function AddActivityScreen() {
                                 This item is marked as special. Select the checkbox if you would like to approve it.
                             </Text>
                         </View>
-
                     )}
+
                     <View style={sharedStyles.buttonContainer}>
                         <TouchableOpacity
                             style={[sharedStyles.button, { backgroundColor: colors.secondary }]}
@@ -190,14 +221,21 @@ export default function AddActivityScreen() {
                     </View>
                 </View>
             </TouchableWithoutFeedback>
-
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     headerTextContainer: {
-        paddingLeft: 70,
+        flex: 1,
+        alignItems: 'center',
+        paddingRight: 30,
+        paddingTop: 5
+    },
+    deleteButton: {
+        position: 'absolute',
+        right: 15,
+        paddingTop: 40
     },
     dropdown: {
         marginBottom: 16,
@@ -210,7 +248,6 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         padding: 10,
     },
-
     checkboxContainer: {
         flexDirection: 'row',
         alignItems: 'center',
