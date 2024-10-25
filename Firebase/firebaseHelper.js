@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, deleteDoc, onSnapshot, query, orderBy } from "firebase/firestore";
+import { addDoc, collection, doc, deleteDoc, onSnapshot, query, orderBy, setDoc } from "firebase/firestore";
 import { database } from "./firebaseSetup";
 
 export function listentoCollection(collectionPath, onUpdate) {
@@ -8,12 +8,7 @@ export function listentoCollection(collectionPath, onUpdate) {
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const items = [];
         querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            // Convert the date string to a Date object
-            if (data.date) {
-                data.date = new Date(data.date);
-            }
-            items.push({ id: doc.id, ...data });
+            items.push({ id: doc.id, ...doc.data() });
         });
         onUpdate(items);
     }, (error) => {
@@ -23,12 +18,21 @@ export function listentoCollection(collectionPath, onUpdate) {
     return unsubscribe;
 }
 
-export async function writeToDB(data, collectionPath) {
+export async function writeToDB(data, collectionPath, docId = null) {
     try {
-        const collectionRef = collection(database, collectionPath)
-        const docRef = await addDoc(collectionRef, data)
-        console.log('Document written with ID:', docRef.id)
-        return docRef.id
+        if (docId) {
+            // Update existing document
+            const docRef = doc(database, collectionPath, docId);
+            await setDoc(docRef, data, { merge: true });
+            console.log('Document updated with ID:', docId);
+            return docId;
+        } else {
+            // Create new document
+            const collectionRef = collection(database, collectionPath);
+            const docRef = await addDoc(collectionRef, data);
+            console.log('Document written with ID:', docRef.id);
+            return docRef.id;
+        }
     } catch (err) {
         console.error('Error writing to db:', err);
         throw err;
