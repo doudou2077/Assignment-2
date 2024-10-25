@@ -39,7 +39,6 @@ export default function ActivitiesScreen({ navigation }) {
         navigation.navigate('AddActivity', { activity: item });
     };
 
-    <ItemsList items={activities} type="activity" theme={theme} onItemPress={handleItemPress} />
     return (
         <View style={[sharedStyles.container, { backgroundColor: theme.backgroundColor }]}>
             <StatusBar backgroundColor={colors.primary} barStyle={theme.isDarkMode ? "light-content" : "dark-content"} />

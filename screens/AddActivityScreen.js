@@ -1,7 +1,6 @@
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Alert } from 'react-native';
 import React, { useState } from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { useNavigation, useRoute } from '@react-navigation/native';
 import DatePicker from '../components/DatePicker';
 import { sharedStyles, colors } from '../helperFile/sharedStyles';
 import AntDesign from '@expo/vector-icons/AntDesign';
