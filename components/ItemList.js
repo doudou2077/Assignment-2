@@ -8,7 +8,7 @@ const ItemsList = ({ items, type, onItemPress }) => {
     const isSpecialActivity = (item) => {
         const lowercaseType = item.type.toLowerCase();
         const duration = Number(item.duration);
-        return (lowercaseType === 'running' || lowercaseType === 'weights') && duration > 60;
+        return (lowercaseType === 'running' || lowercaseType === 'weights') && duration > 60 && item.isSpecial;
     };
 
     const isSpecialDiet = (item) => {
