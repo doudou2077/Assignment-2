@@ -1,22 +1,25 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, Alert, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import DatePicker from '../components/DatePicker';
 import { sharedStyles, colors } from '../helperFile/sharedStyles';
 import { useTheme } from '../context/ThemeContext';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { writeToDB } from '../firebase/firebaseHelper';
+import { writeToDB, deleteFromDB } from '../firebase/firebaseHelper';
 
-export default function AddDietScreen() {
-    const navigation = useNavigation();
-    // Accessing the function to add a diet entry from context
+export default function AddDietScreen({ navigation, route }) {
+
     const { theme } = useTheme();
+    const { params } = route;
 
     // State variables for form inputs
     const [description, setDescription] = useState('');
     const [calories, setCalories] = useState('');
     const [date, setDate] = useState(null);
     const [showDatePicker, setShowDatePicker] = useState(false);
+
+    // Check if we're editing an existing diet entry
+    const isEditMode = params?.dietEntry != undefined;
+    const dietEntry = params?.dietEntry || {};
 
     // Function to handle cancel action
     const handleCancel = () => {
@@ -37,15 +40,46 @@ export default function AddDietScreen() {
             calories: caloriesNumber,
             date: date.toISOString(),
         };
-        try {
-            await writeToDB(newDietEntry, 'diet');
-            console.log('Diet entry saved:', newDietEntry);
-            navigation.goBack();
-        } catch (error) {
-            console.log('Error saving diet entry:', error);
-            Alert.alert('Error', 'Failed to save diet entry.')
 
-        }
+        if (isEditMode) {
+            Alert.alert(
+                "Important",
+                "Are you sure you want to save these changes?",
+                [
+                    {
+                        text: "No",
+                        style: "cancel"
+                    },
+                    {
+                        text: "Yes",
+                        onPress: async () => {
+                            try {
+                                await writeToDB(newDietEntry, 'diet', dietEntry.id)
+                                console.log('New diet updated:', newDietEntry);
+                                navigation.goBack();
+                            } catch (error) {
+                                console.log('Error updating diet entry:', error);
+                                Alert.alert('Error', 'Failed to update diet entry.');
+
+                            }
+                        }
+                    }
+                ]
+
+            )
+
+        } else {
+            try {
+                await writeToDB(newDietEntry, 'diet');
+                console.log('Diet entry saved:', newDietEntry);
+                navigation.goBack();
+            } catch (error) {
+                console.log('Error saving diet entry:', error);
+                Alert.alert('Error', 'Failed to save diet entry.')
+            }
+
+        };
+
     };
 
     return (
