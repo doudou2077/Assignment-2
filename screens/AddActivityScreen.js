@@ -7,6 +7,7 @@ import { sharedStyles, colors } from '../helperFile/sharedStyles';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useTheme } from '../context/ThemeContext';
 import { writeToDB } from '../firebase/firebaseHelper';
+import Checkbox from 'expo-checkbox';
 
 export default function AddActivityScreen() {
     const navigation = useNavigation();
@@ -24,6 +25,14 @@ export default function AddActivityScreen() {
     const [date, setDate] = useState(activity.date ? new Date(activity.date) : null);
     const [showDatePicker, setShowDatePicker] = useState(false);
 
+    const [isSpecial, setIsSpecial] = useState(activity.isSpecial || false);
+
+    const isSpecialActivity = (type, duration) => {
+        const lowercaseType = type.toLowerCase();
+        return (lowercaseType === 'running' || lowercaseType === 'weights') && duration > 60;
+    };
+
+
     const handleCancel = () => {
         navigation.goBack();
     };
@@ -39,40 +48,47 @@ export default function AddActivityScreen() {
             type: activityType,
             duration: durationNumber,
             date: date.toISOString(),
+            isSpecial: isEditMode ? isSpecial : isSpecialActivity(activityType, durationNumber)
         };
 
-        Alert.alert(
-            "Important",
-            "Are you sure you want to save these changes?",
-            [
-                {
-                    text: "No",
-                    style: "cancel"
-                },
-                {
-                    text: "Yes",
-                    onPress: async () => {
-
-                        try {
-                            if (isEditMode) {
-                                // Update existing activity
-                                await writeToDB(newActivity, `activities/${activity.id}`);
+        if (isEditMode) {
+            Alert.alert(
+                "Important",
+                "Are you sure you want to save these changes?",
+                [
+                    {
+                        text: "No",
+                        style: "cancel"
+                    },
+                    {
+                        text: "Yes",
+                        onPress: async () => {
+                            try {
+                                await writeToDB(newActivity, `activities`, activity.id);
                                 console.log('Activity updated:', newActivity);
-                            } else {
-                                // Add new activity
-                                await writeToDB(newActivity, 'activities');
-                                console.log('Activity saved:', newActivity);
+                                navigation.goBack();
+                            } catch (error) {
+                                console.log('Error updating activity:', error);
+                                Alert.alert('Error', 'Failed to update activity.');
                             }
-                            navigation.goBack();
-                        } catch (error) {
-                            console.log('Error saving activity:', error);
-                            Alert.alert('Error', 'Failed to save activity.');
                         }
                     }
-                }]
-        );
-
+                ]
+            );
+        } else {
+            // For adding a new activity, save directly without showing an alert
+            writeToDB(newActivity, 'activities')
+                .then(() => {
+                    console.log('Activity saved:', newActivity);
+                    navigation.goBack();
+                })
+                .catch(error => {
+                    console.log('Error saving activity:', error);
+                    Alert.alert('Error', 'Failed to save activity.');
+                });
+        }
     };
+
 
     return (
         <View style={[sharedStyles.container, { backgroundColor: theme.backgroundColor }]}>
@@ -145,6 +161,19 @@ export default function AddActivityScreen() {
                         />
                     </View>
 
+                    {isEditMode && isSpecialActivity(activityType, Number(duration)) && (
+                        <View style={styles.checkboxContainer}>
+                            <Checkbox
+                                value={isSpecial}
+                                onValueChange={setIsSpecial}
+                                color={isSpecial ? colors.primary : undefined}
+                            />
+                            <Text style={[styles.checkboxLabel, { color: theme.textColor }]}>
+                                This item is marked as special. Select the checkbox if you would like to approve it.
+                            </Text>
+                        </View>
+
+                    )}
                     <View style={sharedStyles.buttonContainer}>
                         <TouchableOpacity
                             style={[sharedStyles.button, { backgroundColor: colors.secondary }]}
@@ -159,7 +188,6 @@ export default function AddActivityScreen() {
                             <Text style={sharedStyles.buttonText}>Save</Text>
                         </TouchableOpacity>
                     </View>
-
                 </View>
             </TouchableWithoutFeedback>
 
@@ -181,5 +209,15 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 5,
         padding: 10,
+    },
+
+    checkboxContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+    checkboxLabel: {
+        marginLeft: 8,
+        flex: 1,
     },
 });
