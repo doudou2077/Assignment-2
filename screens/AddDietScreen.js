@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, Alert, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Pressable, Alert, StyleSheet } from 'react-native';
 import DatePicker from '../components/DatePicker';
 import { sharedStyles, colors } from '../helperFile/sharedStyles';
 import { useTheme } from '../context/ThemeContext';
@@ -122,28 +122,37 @@ export default function AddDietScreen({ navigation, route }) {
     return (
         <View style={[sharedStyles.container, { backgroundColor: theme.backgroundColor }]}>
             <View style={sharedStyles.headerContainer}>
-                <TouchableOpacity
-                    style={sharedStyles.goBackButton}
+                <Pressable
+                    style={({ pressed }) => [
+                        sharedStyles.goBackButton,
+                        { opacity: pressed ? 0.7 : 1 }
+                    ]}
                     onPress={handleCancel}
                 >
                     <AntDesign name="left" size={24} style={[sharedStyles.goBackButtonText, { color: 'white' }]} />
-                </TouchableOpacity>
+                </Pressable>
+
                 <View style={sharedStyles.headerTextContainer}>
                     <Text style={styles.headerText}>{isEditMode ? 'Edit' : 'Add Diet Entry'}</Text>
                 </View>
+
+                {/* the delete button for edit page */}
                 {isEditMode && (
-                    <TouchableOpacity
-                        style={styles.deleteButton}
+                    <Pressable
+                        style={({ pressed }) => [
+                            styles.deleteButton,
+                            { opacity: pressed ? 0.7 : 1 }
+                        ]}
                         onPress={handleDelete}
                     >
                         <AntDesign name="delete" size={24} color="white" style={{ paddingTop: 10 }} />
-                    </TouchableOpacity>
+                    </Pressable>
                 )}
 
 
             </View>
 
-            <TouchableWithoutFeedback>
+            <Pressable style={sharedStyles.centeredContainer}>
                 <View style={sharedStyles.centeredContainer}>
                     <View style={sharedStyles.formElement}>
                         <Text style={[sharedStyles.label, { color: theme.textColor }]}>Description *</Text>
@@ -195,22 +204,35 @@ export default function AddDietScreen({ navigation, route }) {
                     )}
 
                     <View style={sharedStyles.buttonContainer}>
-                        <TouchableOpacity
-                            style={[sharedStyles.button, { backgroundColor: colors.secondary }]}
+                        <Pressable
+                            style={({ pressed }) => [
+                                sharedStyles.button,
+                                {
+                                    backgroundColor: colors.secondary,
+                                    opacity: pressed ? 0.7 : 1
+                                }
+                            ]}
                             onPress={handleCancel}
                         >
                             <Text style={sharedStyles.buttonText}>Cancel</Text>
-                        </TouchableOpacity>
+                        </Pressable>
 
-                        <TouchableOpacity
-                            style={[sharedStyles.button, { backgroundColor: colors.primary }]}
+                        <Pressable
+                            style={({ pressed }) => [
+                                sharedStyles.button,
+                                {
+                                    backgroundColor: colors.primary,
+                                    opacity: pressed ? 0.7 : 1
+                                }
+                            ]}
                             onPress={handleSave}
                         >
                             <Text style={sharedStyles.buttonText}>Save</Text>
-                        </TouchableOpacity>
+                        </Pressable>
+
                     </View>
                 </View>
-            </TouchableWithoutFeedback>
+            </Pressable>
         </View>
     );
 }
