@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StatusBar, TouchableOpacity, Text } from 'react-native';
+import { View, StatusBar, Pressable, Text } from 'react-native';
 import ItemsList from '../components/ItemList';
 import { useTheme } from '../context/ThemeContext';
 import { sharedStyles, colors } from '../helperFile/sharedStyles';
@@ -34,8 +34,11 @@ export default function DietScreen({ navigation }) {
                 <View style={sharedStyles.headerTextContainer}>
                     <Text style={sharedStyles.headerText}>Diet</Text>
                 </View>
-                <TouchableOpacity
-                    style={sharedStyles.iconContainer}
+                <Pressable
+                    style={({ pressed }) => [
+                        sharedStyles.iconContainer,
+                        { opacity: pressed ? 0.7 : 1 }
+                    ]}
                     onPress={navigateToAddDiet}
                 >
                     <View style={sharedStyles.iconButton}>
@@ -44,7 +47,7 @@ export default function DietScreen({ navigation }) {
                     <View style={sharedStyles.iconButton}>
                         <MaterialIcons name="fastfood" size={24} color="white" />
                     </View>
-                </TouchableOpacity>
+                </Pressable>
             </View>
             <View style={[listScreenStyles.listContainer]}>
                 <ItemsList
