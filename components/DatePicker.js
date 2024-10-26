@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
+import { View, Text, Pressable, TextInput, StyleSheet } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 // DatePicker component for selecting a date
@@ -23,12 +23,14 @@ const DatePicker = ({ date, setDate, label, showDatePicker, setShowDatePicker, t
         }
     };
 
-
     return (
         <View>
             <Text style={[styles.label, { color: theme.textColor }]}>{label}</Text>
-            <TouchableOpacity
-                style={styles.datePickerButton}
+            <Pressable
+                style={({ pressed }) => [
+                    styles.datePickerButton,
+                    { backgroundColor: pressed ? 'darkgray' : 'lightgray' }
+                ]}
                 onPress={handleDatePickerPress}
             >
                 <TextInput
@@ -37,7 +39,7 @@ const DatePicker = ({ date, setDate, label, showDatePicker, setShowDatePicker, t
                     placeholder=""
                     editable={false} // Make the input non-editable
                 />
-            </TouchableOpacity>
+            </Pressable>
 
             {showDatePicker && (
                 <DateTimePicker
@@ -66,7 +68,6 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         padding: 10,
         marginBottom: 20,
-        backgroundColor: 'lightgray'
     },
     dateInput: {
         fontSize: 16,
