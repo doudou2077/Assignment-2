@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Alert } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Pressable, Alert } from 'react-native';
 import React, { useState } from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
 import DatePicker from '../components/DatePicker';
@@ -7,6 +7,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { useTheme } from '../context/ThemeContext';
 import { writeToDB, deleteFromDB } from '../firebase/firebaseHelper';
 import Checkbox from 'expo-checkbox';
+
 
 export default function AddActivityScreen({ navigation, route }) {
     const { params } = route;
@@ -66,14 +67,12 @@ export default function AddActivityScreen({ navigation, route }) {
             Alert.alert('Invalid Input', 'Please check your input values');
             return;
         }
-
         const newActivity = {
             type: activityType,
             duration: durationNumber,
             date: date.toISOString(),
             isSpecial: isEditMode ? isSpecial : isSpecialActivity(activityType, durationNumber)
         };
-
         if (isEditMode) {
             Alert.alert(
                 "Important",
@@ -110,34 +109,43 @@ export default function AddActivityScreen({ navigation, route }) {
                 });
         }
     };
-
     return (
         <View style={[sharedStyles.container, { backgroundColor: theme.backgroundColor }]}>
             <View style={sharedStyles.headerContainer}>
-                <TouchableOpacity
-                    style={sharedStyles.goBackButton}
+                <Pressable
+                    style={({ pressed }) => [
+                        sharedStyles.goBackButton,
+                        { opacity: pressed ? 0.7 : 1 }
+                    ]}
                     onPress={handleCancel}
                 >
                     <AntDesign name="left" size={24} style={[sharedStyles.goBackButtonText, { color: 'white' }]} />
-                </TouchableOpacity>
+                </Pressable>
+
                 <View style={styles.headerTextContainer}>
                     <Text style={sharedStyles.headerText}>{isEditMode ? 'Edit' : 'Add Activity'}</Text>
                 </View>
+
+                {/* add the delete button in the edit mode */}
                 {isEditMode && (
-                    <TouchableOpacity
-                        style={styles.deleteButton}
+                    <Pressable
+                        style={({ pressed }) => [
+                            styles.deleteButton,
+                            { opacity: pressed ? 0.7 : 1 }
+                        ]}
                         onPress={handleDelete}
                     >
                         <AntDesign name="delete" size={24} color="white" />
-                    </TouchableOpacity>
+                    </Pressable>
                 )}
-            </View>
 
-            <TouchableWithoutFeedback
+            </View>
+            <Pressable
                 onPress={() => {
                     if (open) setOpen(false);
                     if (showDatePicker) setShowDatePicker(false);
                 }}
+                style={sharedStyles.centeredContainer}
             >
                 <View style={sharedStyles.centeredContainer}>
                     <View style={[sharedStyles.formElement, { zIndex: open ? 3000 : 1 }]}>
@@ -166,7 +174,6 @@ export default function AddActivityScreen({ navigation, route }) {
                             }}
                         />
                     </View>
-
                     <View style={[sharedStyles.formElement, { zIndex: open ? 1 : 1000 }]}>
                         <Text style={[sharedStyles.label, { color: theme.textColor }]}>Duration(mins) *</Text>
                         <TextInput
@@ -178,7 +185,6 @@ export default function AddActivityScreen({ navigation, route }) {
                             backgroundColor='lightgray'
                         />
                     </View>
-
                     <View style={[sharedStyles.formElement, { zIndex: open ? 1 : 1000 }]}>
                         <DatePicker
                             date={date}
@@ -189,7 +195,6 @@ export default function AddActivityScreen({ navigation, route }) {
                             theme={theme}
                         />
                     </View>
-
                     {isEditMode && isSpecialActivity(activityType, Number(duration)) && (
                         <View style={styles.checkboxContainer}>
                             <Checkbox
@@ -202,26 +207,39 @@ export default function AddActivityScreen({ navigation, route }) {
                             </Text>
                         </View>
                     )}
-
                     <View style={sharedStyles.buttonContainer}>
-                        <TouchableOpacity
-                            style={[sharedStyles.button, { backgroundColor: colors.secondary }]}
+                        <Pressable
+                            style={({ pressed }) => [
+                                sharedStyles.button,
+                                {
+                                    backgroundColor: colors.secondary,
+                                    opacity: pressed ? 0.7 : 1
+                                }
+                            ]}
                             onPress={handleCancel}
                         >
                             <Text style={sharedStyles.buttonText}>Cancel</Text>
-                        </TouchableOpacity>
+                        </Pressable>
 
-                        <TouchableOpacity
-                            style={[sharedStyles.button, { backgroundColor: colors.primary }]}
-                            onPress={handleSave}>
+                        <Pressable
+                            style={({ pressed }) => [
+                                sharedStyles.button,
+                                {
+                                    backgroundColor: colors.primary,
+                                    opacity: pressed ? 0.7 : 1
+                                }
+                            ]}
+                            onPress={handleSave}
+                        >
                             <Text style={sharedStyles.buttonText}>Save</Text>
-                        </TouchableOpacity>
+                        </Pressable>
                     </View>
                 </View>
-            </TouchableWithoutFeedback>
+            </Pressable>
         </View>
     );
 }
+
 
 const styles = StyleSheet.create({
     headerTextContainer: {
@@ -256,3 +274,4 @@ const styles = StyleSheet.create({
         flex: 1,
     },
 });
+
