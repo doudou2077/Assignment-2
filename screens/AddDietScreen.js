@@ -152,7 +152,14 @@ export default function AddDietScreen({ navigation, route }) {
 
             </View>
 
-            <Pressable style={sharedStyles.centeredContainer}>
+            <Pressable
+                style={sharedStyles.centeredContainer}
+                onPress={() => {
+                    if (showDatePicker) {
+                        setShowDatePicker(false);
+                    }
+                }}
+            >
                 <View style={sharedStyles.centeredContainer}>
                     <View style={sharedStyles.formElement}>
                         <Text style={[sharedStyles.label, { color: theme.textColor }]}>Description *</Text>
@@ -181,14 +188,16 @@ export default function AddDietScreen({ navigation, route }) {
                     </View>
 
                     <View style={sharedStyles.formElement}>
-                        <DatePicker
-                            theme={theme}
-                            date={date}
-                            setDate={setDate}
-                            setShowDatePicker={setShowDatePicker}
-                            showDatePicker={showDatePicker}
-                            label="Date *"
-                        />
+                        <Pressable onPress={(e) => e.stopPropagation()}>
+                            <DatePicker
+                                theme={theme}
+                                date={date}
+                                setDate={setDate}
+                                setShowDatePicker={setShowDatePicker}
+                                showDatePicker={showDatePicker}
+                                label="Date *"
+                            />
+                        </Pressable>
                     </View>
                     {isEditMode && isSpecialDiet(Number(calories)) && (
                         <View style={styles.checkboxContainer}>
