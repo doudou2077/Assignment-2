@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StatusBar } from 'react-native';
+import { View, Text, Pressable, StatusBar } from 'react-native';
 import ItemsList from '../components/ItemList';
 import { useTheme } from '../context/ThemeContext';
 import { sharedStyles, colors } from '../helperFile/sharedStyles';
@@ -47,8 +47,11 @@ export default function ActivitiesScreen({ navigation }) {
                 <View style={sharedStyles.headerTextContainer}>
                     <Text style={sharedStyles.headerText}>Activities</Text>
                 </View>
-                <TouchableOpacity
-                    style={sharedStyles.iconContainer}
+                <Pressable
+                    style={({ pressed }) => [
+                        sharedStyles.iconContainer,
+                        { opacity: pressed ? 0.7 : 1 }
+                    ]}
                     onPress={navigateToAddActivity}
                 >
                     <View style={sharedStyles.iconButton}>
@@ -57,7 +60,7 @@ export default function ActivitiesScreen({ navigation }) {
                     <View style={sharedStyles.iconButton}>
                         <MaterialCommunityIcons name="run" size={24} color={colors.white} />
                     </View>
-                </TouchableOpacity>
+                </Pressable>
             </View>
             <View style={[listScreenStyles.listContainer, { backgroundColor: theme.backgroundColor }]}>
                 <ItemsList
