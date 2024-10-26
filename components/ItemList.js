@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, Pressable } from 'react-native';
 import { listScreenStyles } from '../helperFile/listScreenStyles';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
@@ -20,33 +20,37 @@ const ItemsList = ({ items, type, onItemPress }) => {
         const dateObject = item.date instanceof Date ? item.date : new Date(item.date);
 
         return (
-            <TouchableOpacity onPress={() => onItemPress(item)}>
-                <View style={listScreenStyles.listItem}>
-                    <View style={listScreenStyles.typeContainer}>
-                        <Text style={listScreenStyles.itemType}>
-                            {type === 'activity' ? item.type : item.description}
-                        </Text>
-                        {special && (
-                            <FontAwesome
-                                name="exclamation-triangle"
-                                size={20}
-                                color="#FFFF00"
-                                style={listScreenStyles.icon}
-                            />
-                        )}
+            <Pressable
+                onPress={() => onItemPress(item)}
+                style={({ pressed }) => [
+                    listScreenStyles.listItem,
+                    { opacity: pressed ? 0.7 : 1 }  // visual feedback when pressed
+                ]}
+            >
+                <View style={listScreenStyles.typeContainer}>
+                    <Text style={listScreenStyles.itemType}>
+                        {type === 'activity' ? item.type : item.description}
+                    </Text>
+                    {special && (
+                        <FontAwesome
+                            name="exclamation-triangle"
+                            size={20}
+                            color="#FFFF00"
+                            style={listScreenStyles.icon}
+                        />
+                    )}
+                </View>
+                <View style={listScreenStyles.detailsContainer}>
+                    <View style={listScreenStyles.detailBox}>
+                        <Text style={listScreenStyles.detailText}>{dateObject.toDateString()}</Text>
                     </View>
-                    <View style={listScreenStyles.detailsContainer}>
-                        <View style={listScreenStyles.detailBox}>
-                            <Text style={listScreenStyles.detailText}>{dateObject.toDateString()}</Text>
-                        </View>
-                        <View style={listScreenStyles.detailBox}>
-                            <Text style={listScreenStyles.detailText}>
-                                {type === 'activity' ? `${item.duration} min` : `${item.calories} cal`}
-                            </Text>
-                        </View>
+                    <View style={listScreenStyles.detailBox}>
+                        <Text style={listScreenStyles.detailText}>
+                            {type === 'activity' ? `${item.duration} min` : `${item.calories} cal`}
+                        </Text>
                     </View>
                 </View>
-            </TouchableOpacity>
+            </Pressable>
         );
     };
 
