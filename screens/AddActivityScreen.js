@@ -37,7 +37,7 @@ export default function AddActivityScreen({ navigation, route }) {
     };
 
 
-    // Function to handle activity deletion
+    // alert when user want to delete a activity
     const handleDelete = () => {
         Alert.alert(
             "Delete",
@@ -65,7 +65,7 @@ export default function AddActivityScreen({ navigation, route }) {
         );
     };
 
-    // Function to handle saving the activity
+    // save data to firebase when user click save
     const handleSave = () => {
         const durationNumber = Number(duration);
         if (!activityType || !duration || isNaN(durationNumber) || durationNumber <= 0 || !date) {
@@ -176,6 +176,7 @@ export default function AddActivityScreen({ navigation, route }) {
                             textStyle={{ color: theme.textColor }}
                             dropDownContainerStyle={{
                                 maxHeight: 210,
+                                backgroundColor: 'lightgrey',
                             }}
                         />
                     </View>
