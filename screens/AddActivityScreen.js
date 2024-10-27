@@ -83,8 +83,12 @@ export default function AddActivityScreen({ navigation, route }) {
 
     // Add handler to close pickers when clicking outside
     const handleOutsidePress = () => {
-        if (open) setOpen(false);
-        if (showDatePicker) setShowDatePicker(false);
+        if (open) {
+            setOpen(false);
+        }
+        if (showDatePicker) {
+            setShowDatePicker(false);
+        }
     };
 
     return (
@@ -101,41 +105,38 @@ export default function AddActivityScreen({ navigation, route }) {
         >
             <Pressable onPress={handleOutsidePress}>
                 {/* Activity Type Dropdown */}
-                <View
-                    style={[sharedStyles.formElement, { zIndex: open ? 3000 : 1 }]}
-                    onTouchStart={(e) => e.stopPropagation()}
-                >
+                <View style={[sharedStyles.formElement, { zIndex: open ? 3000 : 1 }]}>
                     <Text style={[sharedStyles.label, { color: theme.textColor }]}>Activity *</Text>
-                    <DropDownPicker
-                        open={open}
-                        value={activityType}
-                        items={[
-                            { label: 'Walking', value: 'walking' },
-                            { label: 'Running', value: 'running' },
-                            { label: 'Swimming', value: 'swimming' },
-                            { label: 'Weights', value: 'weights' },
-                            { label: 'Yoga', value: 'yoga' },
-                            { label: 'Cycling', value: 'cycling' },
-                            { label: 'Hiking', value: 'hiking' },
-                        ]}
-                        setOpen={setOpen}
-                        setValue={setActivityType}
-                        placeholder='Select An Activity'
-                        style={styles.dropdown}
-                        zIndex={3000}
-                        zIndexInverse={1000}
-                        textStyle={{ color: theme.textColor }}
-                        dropDownContainerStyle={{
-                            maxHeight: 210,
-                            backgroundColor: 'lightgrey',
-                        }}
-                    />
+                    <Pressable onPress={(e) => e.stopPropagation()}>
+                        <DropDownPicker
+                            open={open}
+                            value={activityType}
+                            items={[
+                                { label: 'Walking', value: 'walking' },
+                                { label: 'Running', value: 'running' },
+                                { label: 'Swimming', value: 'swimming' },
+                                { label: 'Weights', value: 'weights' },
+                                { label: 'Yoga', value: 'yoga' },
+                                { label: 'Cycling', value: 'cycling' },
+                                { label: 'Hiking', value: 'hiking' },
+                            ]}
+                            setOpen={setOpen}
+                            setValue={setActivityType}
+                            placeholder='Select An Activity'
+                            style={styles.dropdown}
+                            zIndex={3000}
+                            zIndexInverse={1000}
+                            textStyle={{ color: theme.textColor }}
+                            dropDownContainerStyle={{
+                                maxHeight: 210,
+                                backgroundColor: 'lightgrey',
+                            }}
+                        />
+                    </Pressable>
                 </View>
 
                 {/* Duration Input */}
-                <View
-                    style={[sharedStyles.formElement, { zIndex: open ? 1 : 1000 }]}
-                >
+                <View style={[sharedStyles.formElement, { zIndex: open ? 1 : 1000 }]}>
                     <Text style={[sharedStyles.label, { color: theme.textColor }]}>Duration(mins) *</Text>
                     <TextInput
                         style={[styles.durationInput, { color: theme.textColor }]}
@@ -148,10 +149,7 @@ export default function AddActivityScreen({ navigation, route }) {
                 </View>
 
                 {/* Date Picker */}
-                <View
-                    style={[sharedStyles.formElement, { zIndex: open ? 1 : 1000 }]}
-                    onTouchStart={(e) => e.stopPropagation()}
-                >
+                <View style={[sharedStyles.formElement, { zIndex: open ? 1 : 1000 }]}>
                     <DatePicker
                         date={date}
                         setDate={setDate}
@@ -164,10 +162,7 @@ export default function AddActivityScreen({ navigation, route }) {
 
                 {/* Special Activity Checkbox */}
                 {isEditMode && isSpecialActivity(activityType, Number(duration)) && (
-                    <View
-                        style={styles.checkboxContainer}
-                        onTouchStart={(e) => e.stopPropagation()}
-                    >
+                    <View style={styles.checkboxContainer}>
                         <Checkbox
                             value={isSpecial}
                             onValueChange={setIsSpecial}

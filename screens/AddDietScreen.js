@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Alert, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Alert, StyleSheet, Pressable } from 'react-native';
 import DatePicker from '../components/DatePicker';
 import { sharedStyles, colors } from '../helperFile/sharedStyles';
 import { useTheme } from '../context/ThemeContext';
@@ -76,6 +76,12 @@ export default function AddDietScreen({ navigation, route }) {
         }
     };
 
+    const handleOutsidePress = () => {
+        if (showDatePicker) {
+            setShowDatePicker(false);
+        }
+    };
+
     return (
         <AddEditItemScreen
             navigation={navigation}
@@ -87,57 +93,59 @@ export default function AddDietScreen({ navigation, route }) {
             setIsSpecial={setIsSpecial}
             isSpecialItem={isSpecialDiet(Number(calories))}
         >
-            {/* Description Input */}
-            <View style={sharedStyles.formElement}>
-                <Text style={[sharedStyles.label, { color: theme.textColor }]}>Description *</Text>
-                <TextInput
-                    style={[styles.input, styles.descriptionInput, { color: theme.textColor }]}
-                    value={description}
-                    onChangeText={setDescription}
-                    placeholder=""
-                    backgroundColor='lightgray'
-                    multiline={true}
-                    textAlignVertical="top"
-                    numberOfLines={4}
-                />
-            </View>
-
-            {/* Calories Input */}
-            <View style={sharedStyles.formElement}>
-                <Text style={[sharedStyles.label, { color: theme.textColor }]}>Calories *</Text>
-                <TextInput
-                    style={[styles.input, { color: theme.textColor }]}
-                    value={calories}
-                    onChangeText={setCalories}
-                    placeholder=""
-                    keyboardType="numeric"
-                    backgroundColor='lightgray'
-                />
-            </View>
-
-            {/* Date Picker */}
-            <View style={sharedStyles.formElement}>
-                <DatePicker
-                    theme={theme}
-                    date={date}
-                    setDate={setDate}
-                    setShowDatePicker={setShowDatePicker}
-                    showDatePicker={showDatePicker}
-                    label="Date *"
-                />
-            </View>
-            {isEditMode && isSpecialDiet(Number(calories)) && (
-                <View style={styles.checkboxContainer}>
-                    <Checkbox
-                        value={isSpecial}
-                        onValueChange={setIsSpecial}
-                        color={isSpecial ? colors.primary : undefined}
+            <Pressable onPress={handleOutsidePress}>
+                {/* Description Input */}
+                <View style={sharedStyles.formElement}>
+                    <Text style={[sharedStyles.label, { color: theme.textColor }]}>Description *</Text>
+                    <TextInput
+                        style={[styles.input, styles.descriptionInput, { color: theme.textColor }]}
+                        value={description}
+                        onChangeText={setDescription}
+                        placeholder=""
+                        backgroundColor='lightgray'
+                        multiline={true}
+                        textAlignVertical="top"
+                        numberOfLines={4}
                     />
-                    <Text style={[styles.checkboxLabel, { color: theme.textColor }]}>
-                        This item is marked as special. Select the checkbox if you would like to approve it.
-                    </Text>
                 </View>
-            )}
+
+                {/* Calories Input */}
+                <View style={sharedStyles.formElement}>
+                    <Text style={[sharedStyles.label, { color: theme.textColor }]}>Calories *</Text>
+                    <TextInput
+                        style={[styles.input, { color: theme.textColor }]}
+                        value={calories}
+                        onChangeText={setCalories}
+                        placeholder=""
+                        keyboardType="numeric"
+                        backgroundColor='lightgray'
+                    />
+                </View>
+
+                {/* Date Picker */}
+                <View style={sharedStyles.formElement}>
+                    <DatePicker
+                        theme={theme}
+                        date={date}
+                        setDate={setDate}
+                        setShowDatePicker={setShowDatePicker}
+                        showDatePicker={showDatePicker}
+                        label="Date *"
+                    />
+                </View>
+                {isEditMode && isSpecialDiet(Number(calories)) && (
+                    <View style={styles.checkboxContainer}>
+                        <Checkbox
+                            value={isSpecial}
+                            onValueChange={setIsSpecial}
+                            color={isSpecial ? colors.primary : undefined}
+                        />
+                        <Text style={[styles.checkboxLabel, { color: theme.textColor }]}>
+                            This item is marked as special. Select the checkbox if you would like to approve it.
+                        </Text>
+                    </View>
+                )}
+            </Pressable>
         </AddEditItemScreen>
     );
 }
