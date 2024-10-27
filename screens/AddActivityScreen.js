@@ -7,6 +7,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { useTheme } from '../context/ThemeContext';
 import { writeToDB, deleteFromDB } from '../firebase/firebaseHelper';
 import Checkbox from 'expo-checkbox';
+import ReusableButton from '../components/ReusableButton';
 
 
 export default function AddActivityScreen({ navigation, route }) {
@@ -208,31 +209,16 @@ export default function AddActivityScreen({ navigation, route }) {
                         </View>
                     )}
                     <View style={sharedStyles.buttonContainer}>
-                        <Pressable
-                            style={({ pressed }) => [
-                                sharedStyles.button,
-                                {
-                                    backgroundColor: colors.secondary,
-                                    opacity: pressed ? 0.7 : 1
-                                }
-                            ]}
+                        <ReusableButton
+                            title="Cancel"
                             onPress={handleCancel}
-                        >
-                            <Text style={sharedStyles.buttonText}>Cancel</Text>
-                        </Pressable>
-
-                        <Pressable
-                            style={({ pressed }) => [
-                                sharedStyles.button,
-                                {
-                                    backgroundColor: colors.primary,
-                                    opacity: pressed ? 0.7 : 1
-                                }
-                            ]}
+                            color="secondary"
+                        />
+                        <ReusableButton
+                            title="Save"
                             onPress={handleSave}
-                        >
-                            <Text style={sharedStyles.buttonText}>Save</Text>
-                        </Pressable>
+                            color="primary"
+                        />
                     </View>
                 </View>
             </Pressable>

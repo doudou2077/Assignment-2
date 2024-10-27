@@ -1,9 +1,8 @@
-// components/Button.js
 import React from 'react';
 import { Pressable, Text, StyleSheet } from 'react-native';
 import { colors } from '../helperFile/sharedStyles';
 
-const Button = ({ onPress, title, style, textStyle, color = 'primary' }) => {
+const ReusableButton = ({ onPress, title, style, textStyle, color = 'primary' }) => {
     return (
         <Pressable
             style={({ pressed }) => [
@@ -34,4 +33,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Button;
+export default ReusableButton;
