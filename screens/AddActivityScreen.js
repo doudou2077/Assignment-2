@@ -26,6 +26,7 @@ export default function AddActivityScreen({ navigation, route }) {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [isSpecial, setIsSpecial] = useState(activity.isSpecial || false);
 
+    // function to determine if an activity is special or not
     const isSpecialActivity = (type, duration) => {
         const lowercaseType = type.toLowerCase();
         return (lowercaseType === 'running' || lowercaseType === 'weights') && duration > 60;
@@ -35,6 +36,8 @@ export default function AddActivityScreen({ navigation, route }) {
         navigation.goBack();
     };
 
+
+    // Function to handle activity deletion
     const handleDelete = () => {
         Alert.alert(
             "Delete",
@@ -62,6 +65,7 @@ export default function AddActivityScreen({ navigation, route }) {
         );
     };
 
+    // Function to handle saving the activity
     const handleSave = () => {
         const durationNumber = Number(duration);
         if (!activityType || !duration || isNaN(durationNumber) || durationNumber <= 0 || !date) {

@@ -5,6 +5,7 @@ import { sharedStyles, colors } from '../helperFile/sharedStyles';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function SettingsScreen() {
+    // Get theme-related functions and values from the ThemeContext
     const { isDarkMode, toggleTheme, theme } = useTheme();
 
     return (
@@ -15,6 +16,7 @@ export default function SettingsScreen() {
                 </View>
             </View>
             <View style={styles.content}>
+                {/* Theme toggle button */}
                 <Pressable
                     style={({ pressed }) => [
                         styles.themeToggle,
@@ -22,11 +24,13 @@ export default function SettingsScreen() {
                     ]}
                     onPress={toggleTheme}
                 >
+                    {/* Icon changes based on current theme */}
                     <MaterialCommunityIcons
                         name={isDarkMode ? 'weather-night' : 'weather-sunny'}
                         size={24}
                         color={colors.white}
                     />
+                    {/* Text changes based on current theme */}
                     <Text style={styles.toggleText}>
                         {isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
                     </Text>

@@ -2,8 +2,10 @@ import React from 'react';
 import { Pressable, Text, StyleSheet } from 'react-native';
 import { colors } from '../helperFile/sharedStyles';
 
+// ReusableButton component that creates a customizable button
 const ReusableButton = ({ onPress, title, style, textStyle, color = 'primary' }) => {
     return (
+        // Pressable component for the button, providing visual feedback when pressed
         <Pressable
             style={({ pressed }) => [
                 styles.button,

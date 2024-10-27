@@ -3,14 +3,17 @@ import { View, Text, FlatList, Pressable } from 'react-native';
 import { listScreenStyles } from '../helperFile/listScreenStyles';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
+// ItemsList component that renders a list of items (activities or diet entries)
 const ItemsList = ({ items, type, onItemPress }) => {
 
+    // function to determine if the activity is special
     const isSpecialActivity = (item) => {
         const lowercaseType = item.type.toLowerCase();
         const duration = Number(item.duration);
         return (lowercaseType === 'running' || lowercaseType === 'weights') && duration > 60 && item.isSpecial;
     };
 
+    // function to determine if the diet entry is special
     const isSpecialDiet = (item) => {
         return item.calories > 800 && item.isSpecial;
     };
@@ -31,6 +34,7 @@ const ItemsList = ({ items, type, onItemPress }) => {
                     <Text style={listScreenStyles.itemType}>
                         {type === 'activity' ? item.type : item.description}
                     </Text>
+                    {/* Display warning icon if the item is special */}
                     {special && (
                         <FontAwesome
                             name="exclamation-triangle"

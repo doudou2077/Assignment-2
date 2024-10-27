@@ -13,6 +13,7 @@ export default function DietScreen({ navigation }) {
     // Accessing the current theme from the theme context
     const { theme } = useTheme();
 
+    // function to fetch updated diet enrty data from firebase
     useEffect(() => {
         const unsubscribe = listentoCollection('diet', (updatedDiet) => {
             setDiets(updatedDiet)

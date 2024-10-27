@@ -10,10 +10,14 @@ import { listentoCollection } from '../firebase/firebaseHelper';
 import { useIsFocused } from '@react-navigation/native';
 
 export default function ActivitiesScreen({ navigation }) {
+    // state to store the list of activities
     const [activities, setActivities] = useState([]);
+    // Get the current theme
     const { theme } = useTheme();
+    // Check if this screen is currently focused
     const isFocused = useIsFocused();
 
+    // Effect to update tab bar style when screen is focused
     useEffect(() => {
         if (isFocused) {
             navigation.getParent()?.setOptions({
@@ -25,6 +29,7 @@ export default function ActivitiesScreen({ navigation }) {
         }
     }, [isFocused, navigation]);
 
+    // Effect to listen for changes in the activities collection
     useEffect(() => {
         const unsubscribe = listentoCollection('activities', (updatedActivities) => {
             setActivities(updatedActivities)
@@ -33,8 +38,10 @@ export default function ActivitiesScreen({ navigation }) {
         return () => unsubscribe()
     }, [])
 
+    // Function to navigate to the AddActivity screen
     const navigateToAddActivity = () => navigation.navigate('AddActivity');
 
+    // Function to handle press on an activity item
     const handleItemPress = (item) => {
         navigation.navigate('AddActivity', { activity: item });
     };
@@ -47,6 +54,7 @@ export default function ActivitiesScreen({ navigation }) {
                 <View style={sharedStyles.headerTextContainer}>
                     <Text style={sharedStyles.headerText}>Activities</Text>
                 </View>
+                {/* Button to add a new activity */}
                 <Pressable
                     style={({ pressed }) => [
                         sharedStyles.iconContainer,
@@ -62,6 +70,7 @@ export default function ActivitiesScreen({ navigation }) {
                     </View>
                 </Pressable>
             </View>
+            {/* Container for the list of activities */}
             <View style={[listScreenStyles.listContainer, { backgroundColor: theme.backgroundColor }]}>
                 <ItemsList
                     items={activities}

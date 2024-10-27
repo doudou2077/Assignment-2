@@ -1,10 +1,12 @@
 import { addDoc, collection, doc, deleteDoc, onSnapshot, query, orderBy, setDoc } from "firebase/firestore";
 import { database } from "./firebaseSetup";
 
+// Function to listen to changes in a Firestore collection
 export function listentoCollection(collectionPath, onUpdate) {
     const collectionRef = collection(database, collectionPath);
     const q = query(collectionRef, orderBy("date", "desc")); // Order by date, most recent first
 
+    // Set up a real-time listener
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const items = [];
         querySnapshot.forEach((doc) => {
@@ -14,10 +16,11 @@ export function listentoCollection(collectionPath, onUpdate) {
     }, (error) => {
         console.error("Error listening to collection:", error);
     });
-
+    // Return the unsubscribe function to stop listening when needed
     return unsubscribe;
 }
 
+// Function to write or update a document in Firestore
 export async function writeToDB(data, collectionPath, docId = null) {
     try {
         if (docId) {
@@ -39,6 +42,7 @@ export async function writeToDB(data, collectionPath, docId = null) {
     }
 }
 
+// Function to delete a document from Firestore
 export async function deleteFromDB(id, collectionPath) {
     try {
         await deleteDoc(doc(database, collectionPath, id))
