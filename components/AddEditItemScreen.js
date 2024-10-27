@@ -6,6 +6,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { deleteFromDB } from '../firebase/firebaseHelper';
 import ReusableButton from './ReusableButton';
 
+// Reusable component for both Add and Edit screens of Activities and Diet entries
 export default function AddEditItemScreen({
     navigation,
     isEditMode,
@@ -13,9 +14,6 @@ export default function AddEditItemScreen({
     item,
     children,
     handleSave,
-    isSpecial,
-    setIsSpecial,
-    isSpecialItem,
 }) {
     const { theme } = useTheme();
 
@@ -67,6 +65,7 @@ export default function AddEditItemScreen({
                     <Text style={styles.headerText}>{isEditMode ? 'Edit' : `Add ${itemType}`}</Text>
                 </View>
 
+                {/* Delete button - only shown in edit mode */}
                 {isEditMode && (
                     <Pressable
                         style={({ pressed }) => [
