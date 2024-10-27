@@ -1,79 +1,116 @@
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Alert } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { View, Text, TextInput, StyleSheet, Alert, Pressable } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { useNavigation } from '@react-navigation/native';
-import { useCombinedContext } from '../context/CombinedContext';
 import DatePicker from '../components/DatePicker';
 import { sharedStyles, colors } from '../helperFile/sharedStyles';
-import AntDesign from '@expo/vector-icons/AntDesign';
 import { useTheme } from '../context/ThemeContext';
+import { writeToDB } from '../firebase/firebaseHelper';
+import Checkbox from 'expo-checkbox';
+import AddEditItemScreen from '../components/AddEditItemScreen';
 
-export default function AddActivityScreen() {
-    const navigation = useNavigation();
-    const { addActivity } = useCombinedContext();
+export default function AddActivityScreen({ navigation, route }) {
     const { theme } = useTheme();
+    const { params } = route;
 
-    const handleCancel = () => {
-        navigation.goBack();  // Go back to the previous screen
+    // Check if we're in edit mode by looking for an activity in the route params
+    const isEditMode = params?.activity !== undefined;
+    const activity = params?.activity || {};
+
+    // State management for form fields
+    const [activityType, setActivityType] = useState(activity.type || null);
+    const [open, setOpen] = useState(false);
+    const [duration, setDuration] = useState(activity.duration?.toString() || '');
+    const [date, setDate] = useState(activity.date ? new Date(activity.date) : null);
+    const [showDatePicker, setShowDatePicker] = useState(false);
+    const [isSpecial, setIsSpecial] = useState(activity.isSpecial || false);
+
+    // Determine if an activity should be marked as special based on type and duration
+    const isSpecialActivity = (type, duration) => {
+        if (!type) return false;
+        const lowercaseType = type.toLowerCase();
+        return (lowercaseType === 'running' || lowercaseType === 'weights') && duration > 60;
     };
 
-    // state for dropdown
-    const [activityType, setActivityType] = useState(null);
-    const [open, setOpen] = useState(false);
-
-    // state for duration
-    const [duration, setDuration] = useState('');
-
-    // state for date picker
-    const [date, setDate] = useState(null);
-    const [showDatePicker, setShowDatePicker] = useState(false);
-
-    // Function to handle saving the activity entry
+    // Handle saving or updating an activity
     const handleSave = () => {
         const durationNumber = Number(duration);
         if (!activityType || !duration || isNaN(durationNumber) || durationNumber <= 0 || !date) {
             Alert.alert('Invalid Input', 'Please check your input values');
             return;
         }
-        // Create a new activity object
+        // Prepare activity data
         const newActivity = {
-            id: Date.now(),
             type: activityType,
             duration: durationNumber,
-            date: date,
+            date: date.toISOString(),
+            isSpecial: isEditMode ? isSpecial : isSpecialActivity(activityType, durationNumber)
         };
+        // Handle edit mode with confirmation
+        if (isEditMode) {
+            Alert.alert(
+                "Important",
+                "Are you sure you want to save these changes?",
+                [
+                    { text: "No", style: "cancel" },
+                    {
+                        text: "Yes",
+                        onPress: async () => {
+                            try {
+                                await writeToDB(newActivity, 'activities', activity.id);
+                                console.log('Activity updated:', newActivity);
+                                navigation.goBack();
+                            } catch (error) {
+                                console.log('Error updating activity:', error);
+                                Alert.alert('Error', 'Failed to update activity.');
+                            }
+                        }
+                    }
+                ]
+            );
+        } else {
+            // Handle creating new activity
+            writeToDB(newActivity, 'activities')
+                .then(() => {
+                    console.log('Activity saved:', newActivity);
+                    navigation.goBack();
+                })
+                .catch(error => {
+                    console.log('Error saving activity:', error);
+                    Alert.alert('Error', 'Failed to save activity.');
+                });
+        }
+    };
 
-        addActivity(newActivity);
-        console.log('Activity saved:', newActivity);
-        navigation.goBack();
-    }
+    // Add handler to close pickers when clicking outside
+    const handleOutsidePress = () => {
+        if (open) {
+            setOpen(false);
+        }
+        if (showDatePicker) {
+            setShowDatePicker(false);
+        }
+    };
 
     return (
-        <View style={[sharedStyles.container, { backgroundColor: theme.backgroundColor }]}>
-            <View style={sharedStyles.headerContainer}>
-                <View style={sharedStyles.headerTextContainer}>
-                    <Text style={sharedStyles.headerText}>Add Activity</Text>
-                </View>
-                <TouchableOpacity
-                    style={sharedStyles.goBackButton}
-                    onPress={() => handleCancel()}
-                >
-                    <AntDesign name="left" size={24} style={[sharedStyles.goBackButtonText, { color: theme.textColor }]} />
-                </TouchableOpacity>
-            </View>
-
-            <TouchableWithoutFeedback
-                onPress={() => {
-                    if (open) setOpen(false); // Close dropdown picker
-                    if (showDatePicker) setShowDatePicker(false); // Close date picker
-                }}
-            >
-                <View style={sharedStyles.centeredContainer}>
-                    <View style={[sharedStyles.formElement, { zIndex: open ? 3000 : 1 }]}>
-                        <Text style={[sharedStyles.label, { color: theme.textColor }]}>Activity *</Text>
+        <AddEditItemScreen
+            navigation={navigation}
+            isEditMode={isEditMode}
+            itemType="activity"
+            item={activity}
+            handleSave={handleSave}
+            isSpecial={isSpecial}
+            setIsSpecial={setIsSpecial}
+            isSpecialItem={isSpecialActivity(activityType, Number(duration))}
+            showDatePicker={showDatePicker}
+        >
+            <Pressable onPress={handleOutsidePress}>
+                {/* Activity Type Dropdown */}
+                <View style={[sharedStyles.formElement, { zIndex: open ? 3000 : 1 }]}>
+                    <Text style={[sharedStyles.label, { color: theme.textColor }]}>Activity *</Text>
+                    <Pressable onPress={(e) => e.stopPropagation()}>
                         <DropDownPicker
-                            open={open} // Control dropdown visibility
-                            value={activityType} // Current selected value
+                            open={open}
+                            value={activityType}
                             items={[
                                 { label: 'Walking', value: 'walking' },
                                 { label: 'Running', value: 'running' },
@@ -92,55 +129,54 @@ export default function AddActivityScreen() {
                             textStyle={{ color: theme.textColor }}
                             dropDownContainerStyle={{
                                 maxHeight: 210,
+                                backgroundColor: 'lightgrey',
                             }}
                         />
-                    </View>
-
-                    <View style={[sharedStyles.formElement, { zIndex: open ? 1 : 1000 }]}>
-                        <Text style={[sharedStyles.label, { color: theme.textColor }]}>Duration(mins) *</Text>
-                        <TextInput
-                            style={[styles.durationInput, { color: theme.textColor }]}
-                            placeholder=''
-                            keyboardType='numeric'
-                            value={duration}
-                            onChangeText={setDuration}
-                            backgroundColor='lightgray'
-                        />
-                    </View>
-
-                    <View style={[sharedStyles.formElement, { zIndex: open ? 1 : 1000 }]}>
-                        <DatePicker
-                            date={date}
-                            setDate={setDate}
-                            setShowDatePicker={setShowDatePicker}
-                            showDatePicker={showDatePicker}
-                            label="Date *"
-                            theme={theme}
-                        />
-                    </View>
-
-                    <View style={sharedStyles.buttonContainer}>
-                        <TouchableOpacity
-                            style={[sharedStyles.button, { backgroundColor: colors.secondary }]}
-                            onPress={handleCancel}
-                        >
-                            <Text style={sharedStyles.buttonText}>Cancel</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            style={[sharedStyles.button, { backgroundColor: colors.primary }]}
-                            onPress={handleSave}>
-                            <Text style={sharedStyles.buttonText}>Save</Text>
-                        </TouchableOpacity>
-                    </View>
-
+                    </Pressable>
                 </View>
-            </TouchableWithoutFeedback>
-        </View>
-    )
+
+                {/* Duration Input */}
+                <View style={[sharedStyles.formElement, { zIndex: open ? 1 : 1000 }]}>
+                    <Text style={[sharedStyles.label, { color: theme.textColor }]}>Duration(mins) *</Text>
+                    <TextInput
+                        style={[styles.durationInput, { color: theme.textColor }]}
+                        placeholder=''
+                        keyboardType='numeric'
+                        value={duration}
+                        onChangeText={setDuration}
+                        backgroundColor='lightgray'
+                    />
+                </View>
+
+                {/* Date Picker */}
+                <View style={[sharedStyles.formElement, { zIndex: open ? 1 : 1000 }]}>
+                    <DatePicker
+                        date={date}
+                        setDate={setDate}
+                        setShowDatePicker={setShowDatePicker}
+                        showDatePicker={showDatePicker}
+                        label="Date *"
+                        theme={theme}
+                    />
+                </View>
+
+                {/* Special Activity Checkbox */}
+                {isEditMode && isSpecialActivity(activityType, Number(duration)) && (
+                    <View style={styles.checkboxContainer}>
+                        <Checkbox
+                            value={isSpecial}
+                            onValueChange={setIsSpecial}
+                            color={isSpecial ? colors.primary : undefined}
+                        />
+                        <Text style={[styles.checkboxLabel, { color: theme.textColor }]}>
+                            This item is marked as special. Select the checkbox if you would like to approve it.
+                        </Text>
+                    </View>
+                )}
+            </Pressable>
+        </AddEditItemScreen>
+    );
 }
-
-
 
 const styles = StyleSheet.create({
     dropdown: {
@@ -148,11 +184,20 @@ const styles = StyleSheet.create({
         zIndex: 3000,
         backgroundColor: 'lightgray'
     },
-
     durationInput: {
         borderColor: 'gray',
         borderWidth: 1,
         borderRadius: 5,
         padding: 10,
+    },
+    checkboxContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingTop: 50,
+        marginBottom: -10
+    },
+    checkboxLabel: {
+        marginLeft: 8,
+        flex: 1,
     },
 });

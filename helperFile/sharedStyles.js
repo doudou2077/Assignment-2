@@ -14,15 +14,15 @@ export const sharedStyles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.background,
+
     },
     headerContainer: {
-        flexDirection: 'row', // Arrange header items in a row
+        flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: colors.primary, // Set header background color
+        backgroundColor: colors.primary,
         height: 100,
         paddingTop: 40,
-        position: 'relative',// Positioning context for absolute children
+        paddingHorizontal: 15,
     },
     headerTextContainer: {
         flex: 1,
@@ -32,7 +32,15 @@ export const sharedStyles = StyleSheet.create({
         color: colors.white,
         fontSize: 20,
         fontWeight: 'bold',
+        paddingLeft: 70
     },
+    iconContainer: {
+        flexDirection: 'row',
+    },
+    iconButton: {
+        marginLeft: 7,
+    },
+
     addButton: {
         position: 'absolute', // Position the add button absolutely within the header
         right: 15,
@@ -46,11 +54,14 @@ export const sharedStyles = StyleSheet.create({
         position: 'absolute',
         left: 15,
         paddingTop: 40,
+        padding: 15,
+        zIndex: 1,
     },
     goBackButtonText: {
         color: colors.white,
-        fontSize: 16,
+        fontSize: 18,
         fontWeight: 'bold',
+        paddingTop: 20
     },
 
     centeredContainer: {
@@ -90,6 +101,11 @@ export const sharedStyles = StyleSheet.create({
         color: '#fff',
         fontSize: 16,
         fontWeight: 'bold',
+    },
+    deleteButton: {
+        position: 'absolute',
+        right: 15,
+        top: 50,
     },
 });
 

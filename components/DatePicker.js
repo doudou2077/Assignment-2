@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, StyleSheet, Pressable } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 // DatePicker component for selecting a date
@@ -40,14 +40,17 @@ const DatePicker = ({ date, setDate, label, showDatePicker, setShowDatePicker, t
             </TouchableOpacity>
 
             {showDatePicker && (
-                <DateTimePicker
-                    testID="dateTimePicker"
-                    value={date || new Date()} // Use the selected date or current date
-                    mode="date"
-                    display={'inline'} // Display inline
-                    onChange={onDateChange}
-                    textColor={theme.textColor}
-                />
+                <Pressable onPress={(e) => e.stopPropagation()}>
+                    <DateTimePicker
+                        testID="dateTimePicker"
+                        value={date || new Date()}
+                        mode="date"
+                        display={'inline'}
+                        onChange={onDateChange}
+                        textColor={theme.textColor}
+                        style={styles.datePicker}
+                    />
+                </Pressable>
             )}
         </View>
     );
@@ -71,6 +74,7 @@ const styles = StyleSheet.create({
     dateInput: {
         fontSize: 16,
     },
+    datePicker: {}
 });
 
 export default DatePicker;

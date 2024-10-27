@@ -1,32 +1,40 @@
 import React from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, Pressable } from 'react-native';
 import { listScreenStyles } from '../helperFile/listScreenStyles';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
-// list component used in addactivity and add diet screens to avoid code duplication
-const ItemsList = ({ items, type }) => {
-    // Function to determine if an activity is special based on type and duration
+// ItemsList component that renders a list of items (activities or diet entries)
+const ItemsList = ({ items, type, onItemPress }) => {
+
+    // function to determine if the activity is special
     const isSpecialActivity = (item) => {
         const lowercaseType = item.type.toLowerCase();
         const duration = Number(item.duration);
-        return (lowercaseType === 'running' || lowercaseType === 'weights') && duration > 60;
+        return (lowercaseType === 'running' || lowercaseType === 'weights') && duration > 60 && item.isSpecial;
     };
 
-    // Function to determine if a diet item is special based on calories
+    // function to determine if the diet entry is special
     const isSpecialDiet = (item) => {
-        return item.calories > 800;
+        return item.calories > 800 && item.isSpecial;
     };
 
     const renderItem = ({ item }) => {
         const special = type === 'activity' ? isSpecialActivity(item) : isSpecialDiet(item);
+        const dateObject = item.date instanceof Date ? item.date : new Date(item.date);
+
         return (
-            <View style={listScreenStyles.listItem}>
-                // Display activities or description
+            <Pressable
+                onPress={() => onItemPress(item)}
+                style={({ pressed }) => [
+                    listScreenStyles.listItem,
+                    { opacity: pressed ? 0.7 : 1 }  // visual feedback when pressed
+                ]}
+            >
                 <View style={listScreenStyles.typeContainer}>
                     <Text style={listScreenStyles.itemType}>
                         {type === 'activity' ? item.type : item.description}
                     </Text>
-                    // Icon for special items
+                    {/* Display warning icon if the item is special */}
                     {special && (
                         <FontAwesome
                             name="exclamation-triangle"
@@ -37,18 +45,16 @@ const ItemsList = ({ items, type }) => {
                     )}
                 </View>
                 <View style={listScreenStyles.detailsContainer}>
-                    // Display date
                     <View style={listScreenStyles.detailBox}>
-                        <Text style={listScreenStyles.detailText}>{item.date.toDateString()}</Text>
+                        <Text style={listScreenStyles.detailText}>{dateObject.toDateString()}</Text>
                     </View>
-                    // Display duration or calories
                     <View style={listScreenStyles.detailBox}>
                         <Text style={listScreenStyles.detailText}>
                             {type === 'activity' ? `${item.duration} min` : `${item.calories} cal`}
                         </Text>
                     </View>
                 </View>
-            </View>
+            </Pressable>
         );
     };
 
