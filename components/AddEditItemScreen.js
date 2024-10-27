@@ -15,7 +15,7 @@ export default function AddEditItemScreen({
     handleSave,
     isSpecial,
     setIsSpecial,
-    isSpecialItem
+    isSpecialItem,
 }) {
     const { theme } = useTheme();
 
@@ -83,7 +83,7 @@ export default function AddEditItemScreen({
             <Pressable style={sharedStyles.centeredContainer}>
                 <View style={sharedStyles.centeredContainer}>
                     {children}
-                    <View style={sharedStyles.buttonContainer}>
+                    <View style={styles.buttonContainer}>
                         <ReusableButton
                             title="Cancel"
                             onPress={handleCancel}
@@ -102,6 +102,16 @@ export default function AddEditItemScreen({
 }
 
 const styles = StyleSheet.create({
+    contentContainer: {
+        flex: 1,
+        justifyContent: 'space-between',
+        paddingBottom: 20,
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        paddingTop: 100,
+    },
     headerText: {
         color: colors.white,
         fontSize: 20,
